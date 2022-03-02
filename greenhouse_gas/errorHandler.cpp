@@ -1,4 +1,4 @@
-#include "error_handler.hh"
+#include "errorHandler.hh"
 
 error_handler::error_handler()
 {

@@ -1,4 +1,4 @@
-#include "smear_api.hh"
+#include "smearApi.hh"
 
 smear_api::smear_api()
 {

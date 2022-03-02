@@ -1,4 +1,4 @@
-#include "ui_frontpage.hh"
+#include "uiFrontpage.hh"
 
 ui_frontpage::ui_frontpage()
 {
