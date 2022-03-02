@@ -4,18 +4,18 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        data_handler.cpp \
-        error_handler.cpp \
+        dataHandler.cpp \
+        errorHandler.cpp \
         main.cpp \
-        smear_api.cpp \
-        statfi_api.cpp \
-        ui_frontpage.cpp \
-        ui_visualize.cpp
+        smearApi.cpp \
+        statfiApi.cpp \
+        uiFrontpage.cpp \
+        uiVisualize.cpp
 
 HEADERS += \
-    data_handler.hh \
-    error_handler.hh \
-    smear_api.hh \
-    statfi_api.hh \
-    ui_frontpage.hh \
-    ui_visualize.hh
+    dataHandler.hh \
+    errorHandler.hh \
+    smearApi.hh \
+    statfiApi.hh \
+    uiFrontpage.hh \
+    uiVisualize.hh
