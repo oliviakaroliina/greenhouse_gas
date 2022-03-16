@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
+#include "plotwindow.h"
+
 #include <QMainWindow>
 #include <QCheckBox>
 #include <QRadioButton>
@@ -65,6 +67,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    PlotWindow p;
 
     QCheckBox* smearApi_ = nullptr;
     QCheckBox* statfiApi_ = nullptr;

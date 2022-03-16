@@ -216,6 +216,6 @@ void MainWindow::disableButtons()
 
 void MainWindow::save()
 {
-
+    p.show();
 }
 
