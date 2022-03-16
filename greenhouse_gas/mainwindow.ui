@@ -344,19 +344,6 @@
      <string>maximum</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="emptyAllCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>500</y>
-      <width>151</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>empty all selections</string>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="saveSelectionsCheckBox">
     <property name="geometry">
      <rect>
@@ -486,6 +473,32 @@
      <string>STATFI end date:</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="quitPushButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>10</y>
+      <width>84</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Quit</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="restartPushButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>10</y>
+      <width>84</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Restart</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -500,5 +513,22 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>quitPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>741</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

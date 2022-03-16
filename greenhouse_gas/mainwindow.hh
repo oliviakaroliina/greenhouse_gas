@@ -62,8 +62,11 @@ private slots:
     // Enables all the SMEAR selections in UI
     void disableButtons();
 
-    // Saves the information
+    // Starts the next window
     void save();
+
+    // Restarts the program
+    void restart();
 
 private:
     Ui::MainWindow *ui;
