@@ -63,7 +63,7 @@ private slots:
     void disableButtons();
 
     // Starts the next window
-    void save();
+    void visualize();
 
     // Restarts the program
     void restart();
