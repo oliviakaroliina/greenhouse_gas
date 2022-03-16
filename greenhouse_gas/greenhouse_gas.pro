@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++11
 
@@ -13,6 +13,8 @@ SOURCES += \
     errorhandler.cpp \
     main.cpp \
     mainwindow.cpp \
+    plotwindow.cpp \
+    qcustomplot.cpp \
     smearapi.cpp \
     statfiapi.cpp
 
@@ -20,11 +22,14 @@ HEADERS += \
     datahandler.hh \
     errorhandler.hh \
     mainwindow.hh \
+    plotwindow.h \
+    qcustomplot.h \
     smearapi.hh \
     statfiapi.hh
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    plotwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
