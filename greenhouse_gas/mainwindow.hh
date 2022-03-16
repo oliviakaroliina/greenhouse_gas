@@ -72,28 +72,5 @@ private:
     Ui::MainWindow *ui;
     PlotWindow p;
 
-    QCheckBox* smearApi_ = nullptr;
-    QCheckBox* statfiApi_ = nullptr;
-    QCheckBox* hyytiala_ = nullptr;
-    QCheckBox* kumpula_ = nullptr;
-    QCheckBox* varrio_ = nullptr;
-    QCheckBox* CO2_ = nullptr;
-    QCheckBox* SO2_ = nullptr;
-    QCheckBox* NOx_ = nullptr;
-    QRadioButton* raw_ = nullptr;
-    QRadioButton* average_ = nullptr;
-    QRadioButton* minimum_ = nullptr;
-    QRadioButton* maximum_ = nullptr;
-    QCheckBox* inTonnes_ = nullptr;
-    QCheckBox* intensity_ = nullptr;
-    QCheckBox* indexed_ = nullptr;
-    QCheckBox* intensityIndexed_ = nullptr;
-    QDate* smearStartDate_ = nullptr;
-    QDate* smearEndDate_ = nullptr;
-    QDate* statfiStartDate_ = nullptr;
-    QDate* statfiEndDate_ = nullptr;
-    QCheckBox* emptyAll_ = nullptr;
-    QCheckBox* saveSelections_ = nullptr;
-
 };
 #endif // MAINWINDOW_HH
