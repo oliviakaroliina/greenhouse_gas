@@ -1,0 +1,4 @@
+#ifndef QML_QRC
+#define QML_QRC
+
+#endif // QML_QRC
