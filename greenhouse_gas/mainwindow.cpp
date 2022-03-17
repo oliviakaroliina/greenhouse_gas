@@ -150,68 +150,18 @@ void MainWindow::disableButtons()
     if (ui->smearCheckBox->checkState()!=0 and
         ui->statfiCheckBox->checkState()==0)
     {
-        ui->datasetLabel->setEnabled(false);
-        ui->inTonnesCheckBox->setEnabled(false);
-        ui->indexedCheckBox->setEnabled(false);
-        ui->intensityCheckBox->setEnabled(false);
-        ui->intensityIndexedCheckBox->setEnabled(false);
-        ui->statfiStartLabel->setEnabled(false);
-        ui->statfiEndLabel->setEnabled(false);
-        ui->statfiStartCalendar->setEnabled(false);
-        ui->statfiEndCalendar->setEnabled(false);
+        disableStatfiButtons();
     }
     // statfi is checked and smear is not
     else if (ui->statfiCheckBox->checkState()!=0 and
         ui->smearCheckBox->checkState()==0)
     {
-        ui->stationLabel->setEnabled(false);
-        ui->hyytialaCheckBox->setEnabled(false);
-        ui->kumpulaCheckBox->setEnabled(false);
-        ui->varrioCheckBox->setEnabled(false);
-        ui->gasLabel->setEnabled(false);
-        ui->CO2CheckBox->setEnabled(false);
-        ui->SO2CheckBox->setEnabled(false);
-        ui->NOxCheckBox->setEnabled(false);
-        ui->viewLabel->setEnabled(false);
-        ui->rawRadioButton->setEnabled(false);
-        ui->averageRadioButton->setEnabled(false);
-        ui->minimumRadioButton->setEnabled(false);
-        ui->maximumRadioButton->setEnabled(false);
-        ui->smearStartLabel->setEnabled(false);
-        ui->smearEndLabel->setEnabled(false);
-        ui->smearStartCalendar->setEnabled(false);
-        ui->smearEndCalendar->setEnabled(false);
+        disableSmearButtons();
     }
     // neither or both are checked
     else
     {
-        ui->stationLabel->setEnabled(true);
-        ui->hyytialaCheckBox->setEnabled(true);
-        ui->kumpulaCheckBox->setEnabled(true);
-        ui->varrioCheckBox->setEnabled(true);
-        ui->gasLabel->setEnabled(true);
-        ui->CO2CheckBox->setEnabled(true);
-        ui->SO2CheckBox->setEnabled(true);
-        ui->NOxCheckBox->setEnabled(true);
-        ui->viewLabel->setEnabled(true);
-        ui->rawRadioButton->setEnabled(true);
-        ui->averageRadioButton->setEnabled(true);
-        ui->minimumRadioButton->setEnabled(true);
-        ui->maximumRadioButton->setEnabled(true);
-        ui->smearStartLabel->setEnabled(true);
-        ui->smearEndLabel->setEnabled(true);
-        ui->smearStartCalendar->setEnabled(true);
-        ui->smearEndCalendar->setEnabled(true);
-
-        ui->datasetLabel->setEnabled(true);
-        ui->inTonnesCheckBox->setEnabled(true);
-        ui->indexedCheckBox->setEnabled(true);
-        ui->intensityCheckBox->setEnabled(true);
-        ui->intensityIndexedCheckBox->setEnabled(true);
-        ui->statfiStartLabel->setEnabled(true);
-        ui->statfiEndLabel->setEnabled(true);
-        ui->statfiStartCalendar->setEnabled(true);
-        ui->statfiEndCalendar->setEnabled(true);
+        enableAllButtons();
     }
 }
 
@@ -226,5 +176,70 @@ void MainWindow::restart()
     qApp->quit();
     // Starts a new one
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
+void MainWindow::disableStatfiButtons()
+{
+    ui->datasetLabel->setEnabled(false);
+    ui->inTonnesCheckBox->setEnabled(false);
+    ui->indexedCheckBox->setEnabled(false);
+    ui->intensityCheckBox->setEnabled(false);
+    ui->intensityIndexedCheckBox->setEnabled(false);
+    ui->statfiStartLabel->setEnabled(false);
+    ui->statfiEndLabel->setEnabled(false);
+    ui->statfiStartCalendar->setEnabled(false);
+    ui->statfiEndCalendar->setEnabled(false);
+}
+
+void MainWindow::disableSmearButtons()
+{
+    ui->stationLabel->setEnabled(false);
+    ui->hyytialaCheckBox->setEnabled(false);
+    ui->kumpulaCheckBox->setEnabled(false);
+    ui->varrioCheckBox->setEnabled(false);
+    ui->gasLabel->setEnabled(false);
+    ui->CO2CheckBox->setEnabled(false);
+    ui->SO2CheckBox->setEnabled(false);
+    ui->NOxCheckBox->setEnabled(false);
+    ui->viewLabel->setEnabled(false);
+    ui->rawRadioButton->setEnabled(false);
+    ui->averageRadioButton->setEnabled(false);
+    ui->minimumRadioButton->setEnabled(false);
+    ui->maximumRadioButton->setEnabled(false);
+    ui->smearStartLabel->setEnabled(false);
+    ui->smearEndLabel->setEnabled(false);
+    ui->smearStartCalendar->setEnabled(false);
+    ui->smearEndCalendar->setEnabled(false);
+}
+
+void MainWindow::enableAllButtons()
+{
+    ui->stationLabel->setEnabled(true);
+    ui->hyytialaCheckBox->setEnabled(true);
+    ui->kumpulaCheckBox->setEnabled(true);
+    ui->varrioCheckBox->setEnabled(true);
+    ui->gasLabel->setEnabled(true);
+    ui->CO2CheckBox->setEnabled(true);
+    ui->SO2CheckBox->setEnabled(true);
+    ui->NOxCheckBox->setEnabled(true);
+    ui->viewLabel->setEnabled(true);
+    ui->rawRadioButton->setEnabled(true);
+    ui->averageRadioButton->setEnabled(true);
+    ui->minimumRadioButton->setEnabled(true);
+    ui->maximumRadioButton->setEnabled(true);
+    ui->smearStartLabel->setEnabled(true);
+    ui->smearEndLabel->setEnabled(true);
+    ui->smearStartCalendar->setEnabled(true);
+    ui->smearEndCalendar->setEnabled(true);
+
+    ui->datasetLabel->setEnabled(true);
+    ui->inTonnesCheckBox->setEnabled(true);
+    ui->indexedCheckBox->setEnabled(true);
+    ui->intensityCheckBox->setEnabled(true);
+    ui->intensityIndexedCheckBox->setEnabled(true);
+    ui->statfiStartLabel->setEnabled(true);
+    ui->statfiEndLabel->setEnabled(true);
+    ui->statfiStartCalendar->setEnabled(true);
+    ui->statfiEndCalendar->setEnabled(true);
 }
 

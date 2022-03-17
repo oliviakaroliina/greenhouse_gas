@@ -59,7 +59,7 @@ public:
 
 private slots:
 
-    // Enables all the SMEAR selections in UI
+    // Disables or enables buttons based on api choice
     void disableButtons();
 
     // Starts the next window
@@ -71,6 +71,15 @@ private slots:
 private:
     Ui::MainWindow *ui;
     PlotWindow p;
+
+    // Disables everything related to Statfi in UI
+    void disableStatfiButtons();
+
+    // Disables everything related to Smear in UI
+    void disableSmearButtons();
+
+    // Enables everything in UI
+    void enableAllButtons();
 
 };
 #endif // MAINWINDOW_HH
