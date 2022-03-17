@@ -28,11 +28,11 @@ QVector<QString> MainWindow::getApis()
 {
     QVector<QString> apis = {};
 
-    if (ui->smearCheckBox->isChecked())
+    if (ui->smearCheckBox->checkState()!=0)
     {
         apis.push_back("smear");
     }
-    if (ui->statfiCheckBox->isChecked())
+    if (ui->statfiCheckBox->checkState()!=0)
     {
         apis.push_back("statfi");
     }
@@ -43,15 +43,15 @@ QVector<QString> MainWindow::getMonitoringStations()
 {
     QVector<QString> stations = {};
 
-    if (ui->hyytialaCheckBox->isChecked())
+    if (ui->hyytialaCheckBox->checkState()!=0)
     {
         stations.push_back("hyytiala");
     }
-    if (ui->kumpulaCheckBox->isChecked())
+    if (ui->kumpulaCheckBox->checkState()!=0)
     {
         stations.push_back("kumpula");
     }
-    if (ui->varrioCheckBox->isChecked())
+    if (ui->varrioCheckBox->checkState()!=0)
     {
         stations.push_back("varrio");
     }
@@ -62,15 +62,15 @@ QVector<QString> MainWindow::getGreenhouseGases()
 {
     QVector<QString> gases = {};
 
-    if (ui->CO2CheckBox->isChecked())
+    if (ui->CO2CheckBox->checkState()!=0)
     {
         gases.push_back("co2");
     }
-    if (ui->SO2CheckBox->isChecked())
+    if (ui->SO2CheckBox->checkState()!=0)
     {
         gases.push_back("so2");
     }
-    if (ui->NOxCheckBox->isChecked())
+    if (ui->NOxCheckBox->checkState()!=0)
     {
         gases.push_back("nox");
     }
@@ -79,19 +79,19 @@ QVector<QString> MainWindow::getGreenhouseGases()
 
 QString MainWindow::getDatatype()
 {
-    if (ui->rawRadioButton->isChecked())
+    if (ui->rawRadioButton->isDown())
     {
         return "raw";
     }
-    else if (ui->averageRadioButton->isChecked())
+    else if (ui->averageRadioButton->isDown())
     {
         return "average";
     }
-    else if (ui->minimumRadioButton->isChecked())
+    else if (ui->minimumRadioButton->isDown())
     {
         return "minimum";
     }
-    else if (ui->maximumRadioButton->isChecked())
+    else if (ui->maximumRadioButton->isDown())
     {
         return "maximum";
     }
@@ -105,19 +105,19 @@ QVector<QString> MainWindow::getDatasets()
 {
     QVector<QString> datasets = {};
 
-    if (ui->inTonnesCheckBox->isChecked())
+    if (ui->inTonnesCheckBox->checkState()!=0)
     {
         datasets.push_back("in tonnes");
     }
-    if (ui->intensityCheckBox->isChecked())
+    if (ui->intensityCheckBox->checkState()!=0)
     {
         datasets.push_back("intensity");
     }
-    if (ui->indexedCheckBox->isChecked())
+    if (ui->indexedCheckBox->checkState()!=0)
     {
         datasets.push_back("indexed");
     }
-    if (ui->intensityIndexedCheckBox->isChecked())
+    if (ui->intensityIndexedCheckBox->checkState()!=0)
     {
         datasets.push_back("intensity indexed");
     }
