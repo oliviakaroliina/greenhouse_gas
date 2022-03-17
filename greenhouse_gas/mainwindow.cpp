@@ -15,8 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
             &MainWindow::disableButtons);
     connect(ui->visualizePushButton, &QPushButton::clicked, this,
             &MainWindow::visualize);
-    connect(ui->restartPushButton, &QPushButton::clicked, this,
-            &MainWindow::restart);
+    //connect(ui->restartPushButton, &QPushButton::clicked, this,
+            //&MainWindow::restart);
 }
 
 MainWindow::~MainWindow()
