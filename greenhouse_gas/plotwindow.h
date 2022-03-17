@@ -2,6 +2,8 @@
 #define PLOTWINDOW_H
 
 #include <QWidget>
+#include <QMainWindow>
+#include "qcustomplot.h"
 
 namespace Ui {
 class PlotWindow;

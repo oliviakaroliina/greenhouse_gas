@@ -14,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->statfiCheckBox, &QRadioButton::clicked, this,
             &MainWindow::disableButtons);
     connect(ui->visualizePushButton, &QPushButton::clicked, this,
-            &MainWindow::save);
-
+            &MainWindow::visualize);
+    connect(ui->restartPushButton, &QPushButton::clicked, this,
+            &MainWindow::restart);
 }
 
 MainWindow::~MainWindow()
@@ -214,8 +215,16 @@ void MainWindow::disableButtons()
     }
 }
 
-void MainWindow::save()
+void MainWindow::visualize()
 {
+    p.show();
+}
 
+void MainWindow::restart()
+{
+    // Quits the previous program
+    qApp->quit();
+    // Starts a new one
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
