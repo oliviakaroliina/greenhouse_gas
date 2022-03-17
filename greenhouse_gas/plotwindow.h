@@ -17,6 +17,9 @@ public:
     explicit PlotWindow(QWidget *parent = nullptr);
     ~PlotWindow();
 
+private slots:
+    void handleButton();
+
 private:
     Ui::PlotWindow *ui;
 };
