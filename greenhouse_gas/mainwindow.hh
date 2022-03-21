@@ -103,5 +103,16 @@ private:
     // Saves selections to the next time when the program is used
     void saveSelections();
 
+    // Reads selections from file and puts them into the UI
+    void readSelections();
+
+    // Parameters:
+    // - s: the string to be splitted
+    // - separator: the separator that splits
+    // Splits a row into smaller strings
+    // and adds them to a vector of strings
+    std::vector<std::string> split(const std::string& s, const char& separator,
+                                   bool ignore_empty);
+
 };
 #endif // MAINWINDOW_HH

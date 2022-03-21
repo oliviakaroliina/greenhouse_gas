@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
             &MainWindow::visualize);
     connect(ui->restartPushButton, &QPushButton::clicked, this,
             &MainWindow::restart);
+
+    readSelections();
 }
 
 MainWindow::~MainWindow()
@@ -300,5 +302,55 @@ void MainWindow::saveSelections()
 
     // Closes the file
     file_object.close();
+}
+
+void MainWindow::readSelections()
+{
+    // Opens the file for reading
+    std::ifstream file_object(SELECTIONS_FILE);
+    if (file_object)
+    {
+        std::string row;
+        while (getline(file_object, row))
+        {
+            if (row != "")
+            {
+                std::vector<std::string> parts = split(row, ':', true);
+                // HANDLE THE DATA HERE
+            }
+        }
+        // Closes the file
+        file_object.close();
+    }
+}
+
+std::vector<std::string> MainWindow::split(const std::string& s, const char&
+                                           separator, bool ignore_empty)
+{
+    std::vector<std::string> result;
+    // For saving the rest of the string after splitting
+    std::string tmp = s;
+
+    while (tmp.find(separator) != std::string::npos)
+    {
+        // Saves the part to a variable
+        std::string new_part = tmp.substr(0, tmp.find(separator));
+
+        // Saves rest of the string without the part to the variable
+        tmp = tmp.substr(tmp.find(separator)+1, tmp.size());
+
+        // If the part is empty and the empty parts are wanted too
+        // or vice versa, adds the part to the result
+        if (not(ignore_empty and new_part.empty()))
+        {
+            result.push_back(new_part);
+        }
+    }
+    // Adds the last part to the result
+    if (not(ignore_empty and tmp.empty()))
+    {
+        result.push_back(tmp);
+    }
+    return result;
 }
 
