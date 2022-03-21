@@ -72,6 +72,25 @@ private:
     Ui::MainWindow *ui;
     PlotWindow p;
 
+    const std::string SELECTIONS_FILE = "selections.txt";
+    const QString NO_VALUE = "";
+    const QString SMEAR = "smear";
+    const QString STATFI = "statfi";
+    const QString HYYTIALA = "hyytiala";
+    const QString KUMPULA = "kumpula";
+    const QString VARRIO = "varrio";
+    const QString CO2 = "co2";
+    const QString SO2 = "so2";
+    const QString NOX = "nox";
+    const QString RAW = "raw";
+    const QString AVERAGE = "average";
+    const QString MINIMUM = "minimum";
+    const QString MAXIMUM = "maximum";
+    const QString IN_TONNES = "in tonnes";
+    const QString INTENSITY = "intensity";
+    const QString INDEXED = "indexed";
+    const QString INTENSITY_INDEXED = "intensity indexed";
+
     // Disables everything related to Statfi in UI
     void disableStatfiButtons();
 
@@ -80,6 +99,9 @@ private:
 
     // Enables everything in UI
     void enableAllButtons();
+
+    // Saves selections to the next time when the program is used
+    void saveSelections();
 
 };
 #endif // MAINWINDOW_HH

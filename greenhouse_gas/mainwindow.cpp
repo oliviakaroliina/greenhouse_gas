@@ -1,6 +1,7 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <fstream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -30,11 +31,11 @@ QVector<QString> MainWindow::getApis()
 
     if (ui->smearCheckBox->checkState()!=0)
     {
-        apis.push_back("smear");
+        apis.push_back(SMEAR);
     }
     if (ui->statfiCheckBox->checkState()!=0)
     {
-        apis.push_back("statfi");
+        apis.push_back(STATFI);
     }
     return apis;
 }
@@ -45,15 +46,15 @@ QVector<QString> MainWindow::getMonitoringStations()
 
     if (ui->hyytialaCheckBox->checkState()!=0)
     {
-        stations.push_back("hyytiala");
+        stations.push_back(HYYTIALA);
     }
     if (ui->kumpulaCheckBox->checkState()!=0)
     {
-        stations.push_back("kumpula");
+        stations.push_back(KUMPULA);
     }
     if (ui->varrioCheckBox->checkState()!=0)
     {
-        stations.push_back("varrio");
+        stations.push_back(VARRIO);
     }
     return stations;
 }
@@ -64,15 +65,15 @@ QVector<QString> MainWindow::getGreenhouseGases()
 
     if (ui->CO2CheckBox->checkState()!=0)
     {
-        gases.push_back("co2");
+        gases.push_back(CO2);
     }
     if (ui->SO2CheckBox->checkState()!=0)
     {
-        gases.push_back("so2");
+        gases.push_back(SO2);
     }
     if (ui->NOxCheckBox->checkState()!=0)
     {
-        gases.push_back("nox");
+        gases.push_back(NOX);
     }
     return gases;
 }
@@ -81,23 +82,23 @@ QString MainWindow::getDatatype()
 {
     if (ui->rawRadioButton->isDown())
     {
-        return "raw";
+        return RAW;
     }
     else if (ui->averageRadioButton->isDown())
     {
-        return "average";
+        return AVERAGE;
     }
     else if (ui->minimumRadioButton->isDown())
     {
-        return "minimum";
+        return MINIMUM;
     }
     else if (ui->maximumRadioButton->isDown())
     {
-        return "maximum";
+        return MAXIMUM;
     }
     else
     {
-        return "";
+        return NO_VALUE;
     }
 }
 
@@ -107,19 +108,19 @@ QVector<QString> MainWindow::getDatasets()
 
     if (ui->inTonnesCheckBox->checkState()!=0)
     {
-        datasets.push_back("in tonnes");
+        datasets.push_back(IN_TONNES);
     }
     if (ui->intensityCheckBox->checkState()!=0)
     {
-        datasets.push_back("intensity");
+        datasets.push_back(INTENSITY);
     }
     if (ui->indexedCheckBox->checkState()!=0)
     {
-        datasets.push_back("indexed");
+        datasets.push_back(INDEXED);
     }
     if (ui->intensityIndexedCheckBox->checkState()!=0)
     {
-        datasets.push_back("intensity indexed");
+        datasets.push_back(INTENSITY_INDEXED);
     }
     return datasets;
 }
@@ -146,19 +147,19 @@ QDate MainWindow::getStatfiEndDate()
 
 void MainWindow::disableButtons()
 {
-    // smear is checked and statfi is not
+    // Smear is checked and statfi is not
     if (ui->smearCheckBox->checkState()!=0 and
         ui->statfiCheckBox->checkState()==0)
     {
         disableStatfiButtons();
     }
-    // statfi is checked and smear is not
+    // Statfi is checked and smear is not
     else if (ui->statfiCheckBox->checkState()!=0 and
-        ui->smearCheckBox->checkState()==0)
+             ui->smearCheckBox->checkState()==0)
     {
         disableSmearButtons();
     }
-    // neither or both are checked
+    // Neither or both are checked
     else
     {
         enableAllButtons();
@@ -167,6 +168,11 @@ void MainWindow::disableButtons()
 
 void MainWindow::visualize()
 {
+    // Save selections -checkbox is checked
+    if (ui->saveSelectionsCheckBox->checkState()!=0)
+    {
+        saveSelections();
+    }
     p.show();
 }
 
@@ -241,5 +247,58 @@ void MainWindow::enableAllButtons()
     ui->statfiEndLabel->setEnabled(true);
     ui->statfiStartCalendar->setEnabled(true);
     ui->statfiEndCalendar->setEnabled(true);
+}
+
+void MainWindow::saveSelections()
+{
+    // Fetches selections
+    QVector<QString> apis = getApis();
+    QVector<QString> stations = getMonitoringStations();
+    QVector<QString> gases = getGreenhouseGases();
+    QString datatype = getDatatype();
+    QVector<QString> datasets = getDatasets();
+    QDate smearstart = getSmearStartDate();
+    QDate smearend = getSmearEndDate();
+    QDate statfistart = getStatfiStartDate();
+    QDate statfiend = getStatfiEndDate();
+
+    // Opens the file for writing
+    std::ofstream file_object(SELECTIONS_FILE);
+
+    // Writes the information to the file
+    // - Vectors contents are separated with :
+    // - Dates are represented as day:month:year
+    // - Different informations are in their own lines
+    for (QString& api : apis)
+    {
+        file_object << api.toStdString() << ":";
+    }
+    file_object << std::endl;
+    for (QString& station : stations)
+    {
+        file_object << station.toStdString() << ":";
+    }
+    file_object << std::endl;
+    for (QString& gas : gases)
+    {
+        file_object << gas.toStdString() << ":";
+    }
+    file_object << std::endl << datatype.toStdString() << std::endl;
+    for (QString& dataset : datasets)
+    {
+        file_object << dataset.toStdString() << ":";
+    }
+    file_object << std::endl;
+    file_object << smearstart.day() << ":" << smearstart.month() << ":" <<
+                   smearstart.year() << ":" << std::endl;
+    file_object << smearend.day() << ":" << smearend.month() << ":" <<
+                   smearend.year() << ":" << std::endl;
+    file_object << statfistart.day() << ":" << statfistart.month() << ":" <<
+                   statfistart.year() << ":" << std::endl;
+    file_object << statfiend.day() << ":" << statfiend.month() << ":" <<
+                   statfiend.year() << ":" << std::endl;
+
+    // Closes the file
+    file_object.close();
 }
 
