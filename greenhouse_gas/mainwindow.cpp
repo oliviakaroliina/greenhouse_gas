@@ -173,6 +173,7 @@ void MainWindow::visualize()
     // Save selections -checkbox is checked
     if (ui->saveSelectionsCheckBox->checkState()!=0)
     {
+        qDebug() << "saveselections";
         saveSelections();
     }
     p.show();
