@@ -17,6 +17,10 @@ driver::driver(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
+
+    QObject::connect(&w,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
+    errorHandler errorhandler;
+
     a.exec();
 
     // Api jutut
@@ -35,16 +39,10 @@ driver::driver(int argc, char *argv[])
     engine.load(url);
 
     app.exec();
-
-    QObject::connect(&w,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
-
-    errorHandler errorhandler;
-
 }
 
 void driver::createApis()
 {
-    qDebug() << "Tassa on virhe";
     smearApi smear;
     statfiApi statfi;
 
