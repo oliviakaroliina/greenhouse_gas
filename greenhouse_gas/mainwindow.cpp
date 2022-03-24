@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <fstream>
+#include <QProcess>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -176,7 +177,7 @@ void MainWindow::visualize()
         qDebug() << "saveselections";
         saveSelections();
     }
-    p.show();
+    emit visualizeButtonPressed();
 }
 
 void MainWindow::restart()

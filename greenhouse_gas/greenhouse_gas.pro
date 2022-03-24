@@ -13,6 +13,7 @@ CONFIG += c++11
 
 SOURCES += \
     datahandler.cpp \
+    driver.cpp \
     errorhandler.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     datahandler.hh \
+    driver.hh \
     errorhandler.hh \
     mainwindow.hh \
     plotwindow.h \

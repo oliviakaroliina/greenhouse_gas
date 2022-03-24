@@ -1,8 +1,6 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
-#include "plotwindow.h"
-
 #include <QMainWindow>
 #include <QCheckBox>
 #include <QRadioButton>
@@ -57,6 +55,9 @@ public:
     // Returns Statfi end date
     QDate getStatfiEndDate();
 
+signals:
+    void visualizeButtonPressed();
+
 private slots:
 
     // Disables or enables buttons based on api choice
@@ -70,7 +71,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    PlotWindow p;
 
     const std::string SELECTIONS_FILE = "selections.txt";
     const QString NO_VALUE = "";

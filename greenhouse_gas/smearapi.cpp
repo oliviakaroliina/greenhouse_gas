@@ -124,6 +124,9 @@ void smearApi::requestCompleted(QNetworkReply* networkReply)
     emit currentContentChanged();
 
     qDebug() << "Reply to" << networkReply->url() << "with status code:" << statuscodeVariant.toInt();
+
+    //MEIÄN LISÄÄMÄ:
+    emit dataFetched();
 }
 
 void smearApi::requestError(QNetworkReply::NetworkError errorCode)
