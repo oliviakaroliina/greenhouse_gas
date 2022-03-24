@@ -23,8 +23,6 @@ public:
     QUrl currentUrl_;
     int currentStatuscode_;
     QString currentContent_;
-
-
 };
 
 #endif // SMEARAPI_HH*/
@@ -60,6 +58,7 @@ signals:
     void currentUrlChanged();
     void currentStatuscodeChanged();
     void currentContentChanged();
+    void dataFetched();
 
 private:
     QNetworkAccessManager* network_;

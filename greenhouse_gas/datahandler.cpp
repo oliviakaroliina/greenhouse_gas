@@ -4,3 +4,9 @@ dataHandler::dataHandler()
 {
 
 }
+
+void dataHandler::fetchDataFromApis()
+{
+    emit dataFetchedFromApis();
+
+}
