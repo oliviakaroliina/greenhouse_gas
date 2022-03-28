@@ -111,8 +111,38 @@ private:
     // - separator: the separator that splits
     // Splits a row into smaller strings
     // and adds them to a vector of strings
+    // Returns: a vector of strings, that has been splitted from s in spots
+    //          where separators are
     std::vector<std::string> split(const std::string& s, const char& separator,
                                    bool ignore_empty);
+
+    // Parameters:
+    // - apis: if information to be added to UI are apis
+    // - stations: if information to be added to UI are stations
+    // - gases: if information to be added to UI are gases
+    // - datasets: if information to be added to UI are datasets
+    // - info: the information read from the file, where has been saved the user's
+    //         earlier selections. e. g. {"hyytiala", "varrio"}
+    // Sets different information to the UI based on the user's previous selections
+    void setSelections(bool apis, bool stations, bool gases, bool datasets,
+                       std::vector<std::string>& info);
+
+    // Parameters:
+    // - datatype: tells which datatype the user selected earlier
+    // Sets datatype information to the UI based on the user's previous selection
+    void setDatatype(std::string& datatype);
+
+    // Parameters:
+    // - smearstart: if information to be added to UI is smear's start date
+    // - smearend: if information to be added to UI is smear's end date
+    // - statfistart: if information to be added to UI is statfi's start date
+    // - statfiend: if information to be added to UI is statfi's end date
+    // - day: the day of the date to be added to the UI
+    // - month: the month of the date to be added to the UI
+    // - year: the year of the date to be added to the UI
+    // Sets date information to the UI based on the user's previous selection
+    void setDate(bool smearstart, bool smearend, bool statfistart,
+                 bool statfiend, int day, int month, int year);
 
 };
 #endif // MAINWINDOW_HH

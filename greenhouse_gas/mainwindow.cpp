@@ -174,8 +174,8 @@ void MainWindow::visualize()
     // Save selections -checkbox is checked
     if (ui->saveSelectionsCheckBox->checkState()!=0)
     {
-        qDebug() << "saveselections";
-        saveSelections();
+        // POISTA ALEMMAT KOMMENTTIMERKIT, KUN OHJELMA EI CRASHAA
+        //saveSelections();
     }
     emit visualizeButtonPressed();
 }
@@ -270,35 +270,39 @@ void MainWindow::saveSelections()
     std::ofstream file_object(SELECTIONS_FILE);
 
     // Writes the information to the file
+    // - The metadata is first in the row, and after that :
+    // - Different informations are in their own lines
     // - Vectors contents are separated with :
     // - Dates are represented as day:month:year
-    // - Different informations are in their own lines
+
+    file_object << "apis:";
     for (QString& api : apis)
     {
         file_object << api.toStdString() << ":";
     }
-    file_object << std::endl;
+    file_object << std::endl << "stations:";
     for (QString& station : stations)
     {
         file_object << station.toStdString() << ":";
     }
-    file_object << std::endl;
+    file_object << std::endl << "gases:";
     for (QString& gas : gases)
     {
         file_object << gas.toStdString() << ":";
     }
-    file_object << std::endl << datatype.toStdString() << std::endl;
+    file_object << std::endl << "datatype:" << datatype.toStdString() <<
+                   std::endl << "datasets:";
     for (QString& dataset : datasets)
     {
         file_object << dataset.toStdString() << ":";
     }
-    file_object << std::endl;
+    file_object << std::endl << "smearstart:";
     file_object << smearstart.day() << ":" << smearstart.month() << ":" <<
-                   smearstart.year() << ":" << std::endl;
+                   smearstart.year() << ":" << std::endl << "smearend:";
     file_object << smearend.day() << ":" << smearend.month() << ":" <<
-                   smearend.year() << ":" << std::endl;
+                   smearend.year() << ":" << std::endl << "statfistart:";
     file_object << statfistart.day() << ":" << statfistart.month() << ":" <<
-                   statfistart.year() << ":" << std::endl;
+                   statfistart.year() << ":" << std::endl << "statfiend:";
     file_object << statfiend.day() << ":" << statfiend.month() << ":" <<
                    statfiend.year() << ":" << std::endl;
 
@@ -313,13 +317,60 @@ void MainWindow::readSelections()
     if (file_object)
     {
         std::string row;
+        int rowNumber = 1;
         while (getline(file_object, row))
         {
             if (row != "")
             {
                 std::vector<std::string> parts = split(row, ':', true);
-                // HANDLE THE DATA HERE
+
+                // Based on the row's information, the right information
+                // will be added to UI
+                if (rowNumber == 1)
+                {
+                    setSelections(1, 0, 0, 0, parts);
+                }
+                else if (rowNumber == 2)
+                {
+                    setSelections(0, 1, 0, 0, parts);
+                }
+                else if (rowNumber == 3)
+                {
+                    setSelections(0, 0, 1, 0, parts);
+                }
+                else if (rowNumber == 4)
+                {
+                    setDatatype(parts.at(1));
+                }
+                else if (rowNumber == 5)
+                {
+                    setSelections(0, 0, 0, 1, parts);
+                }
+                else if (rowNumber == 6)
+                {
+                    // Indexing starts from 1, because the first word in
+                    // the row is metadata (explains the data type), so
+                    // the actual information starts from the second word
+                    setDate(1, 0, 0, 0, std::stoi(parts.at(1)),
+                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                }
+                else if (rowNumber == 7)
+                {
+                    setDate(0, 1, 0, 0, std::stoi(parts.at(1)),
+                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                }
+                else if (rowNumber == 8)
+                {
+                    setDate(0, 0, 1, 0, std::stoi(parts.at(1)),
+                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                }
+                else if (rowNumber == 9)
+                {
+                    setDate(0, 0, 0, 1, std::stoi(parts.at(1)),
+                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                }
             }
+            ++rowNumber;
         }
         // Closes the file
         file_object.close();
@@ -356,3 +407,121 @@ std::vector<std::string> MainWindow::split(const std::string& s, const char&
     return result;
 }
 
+void MainWindow::setSelections(bool apis, bool stations, bool gases,
+                               bool datasets, std::vector<std::string> &info)
+{
+    if (apis)
+    {
+        for (std::string& api : info)
+        {
+            if (api == SMEAR.toStdString())
+            {
+                // Sets check box as ticked
+                ui->smearCheckBox->setCheckState(Qt::Checked);
+            }
+            if (api == STATFI.toStdString())
+            {
+                ui->statfiCheckBox->setCheckState(Qt::Checked);
+            }
+        }
+    }
+    else if (stations)
+    {
+        for (std::string& station : info)
+        {
+            if (station == HYYTIALA.toStdString())
+            {
+                ui->hyytialaCheckBox->setCheckState(Qt::Checked);
+            }
+            if (station == KUMPULA.toStdString())
+            {
+                ui->kumpulaCheckBox->setCheckState(Qt::Checked);
+            }
+            if (station == VARRIO.toStdString())
+            {
+                ui->varrioCheckBox->setCheckState(Qt::Checked);
+            }
+        }
+    }
+    else if (gases)
+    {
+        for (std::string& gas : info)
+        {
+            if (gas == CO2.toStdString())
+            {
+                ui->CO2CheckBox->setCheckState(Qt::Checked);
+            }
+            if (gas == SO2.toStdString())
+            {
+                ui->SO2CheckBox->setCheckState(Qt::Checked);
+            }
+            if (gas == NOX.toStdString())
+            {
+                ui->NOxCheckBox->setCheckState(Qt::Checked);
+            }
+        }
+    }
+    else if (datasets)
+    {
+        for (std::string& dataset : info)
+        {
+            if (dataset == IN_TONNES.toStdString())
+            {
+                ui->inTonnesCheckBox->setCheckState(Qt::Checked);
+            }
+            if (dataset == INTENSITY.toStdString())
+            {
+                ui->intensityCheckBox->setCheckState(Qt::Checked);
+            }
+            if (dataset == INDEXED.toStdString())
+            {
+                ui->indexedCheckBox->setCheckState(Qt::Checked);
+            }
+            if (dataset == INTENSITY_INDEXED.toStdString())
+            {
+                ui->intensityIndexedCheckBox->setCheckState(Qt::Checked);
+            }
+        }
+    }
+}
+
+void MainWindow::setDatatype(std::string &datatype)
+{
+    if (datatype == RAW.toStdString())
+    {
+        ui->rawRadioButton->setChecked(true);
+    }
+    else if (datatype == AVERAGE.toStdString())
+    {
+        ui->averageRadioButton->setChecked(true);
+    }
+    else if (datatype == MINIMUM.toStdString())
+    {
+        ui->minimumRadioButton->setChecked(true);
+    }
+    else if (datatype == MAXIMUM.toStdString())
+    {
+        ui->maximumRadioButton->setChecked(true);
+    }
+}
+
+void MainWindow::setDate(bool smearstart, bool smearend, bool statfistart,
+                         bool statfiend, int day, int month, int year)
+{
+    if (smearstart)
+    {
+        ui->smearStartCalendar->setSelectedDate({year, month, day});
+    }
+    else if (smearend)
+    {
+        ui->smearEndCalendar->setSelectedDate({year, month, day});
+    }
+    else if (statfistart)
+    {
+        ui->statfiStartCalendar->setSelectedDate({year, month, day});
+    }
+    else if (statfiend)
+    {
+        ui->statfiEndCalendar->setSelectedDate({year, month, day});
+    }
+}
