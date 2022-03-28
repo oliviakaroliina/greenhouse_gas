@@ -5,27 +5,7 @@
 #include "QObject"
 #include "QDebug"
 #include "QNetworkReply"
-#include <iostream>
 #include "QNetworkRequest"
-
-/*class smearApi
-{
-public:
-    smearApi();
-    ~smearApi();
-    void fetch();
-
-    QUrl getCurrentUrl() const;
-    int getCurrentStatuscode() const;
-    QString getCurrentContent() const;
-
-    QNetworkAccessManager* network_;
-    QUrl currentUrl_;
-    int currentStatuscode_;
-    QString currentContent_;
-};
-
-#endif // SMEARAPI_HH*/
 
 class QNetworkAccessManager;
 
@@ -33,44 +13,19 @@ class smearApi : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QUrl currentUrl READ getCurrentUrl NOTIFY currentUrlChanged)
-    Q_PROPERTY(int currentStatuscode READ getCurrentStatuscode NOTIFY currentStatuscodeChanged)
-    Q_PROPERTY(QString currentContent READ getCurrentContent NOTIFY currentContentChanged)
-
 public:
     explicit smearApi(QObject* parent = nullptr);
     ~smearApi();
 
-    QUrl getCurrentUrl() const;
-    int getCurrentStatuscode() const;
-    QString getCurrentContent() const;
-
-    // HTTP request can contain multiple custom headers but support for just one in this case
-    Q_INVOKABLE void requestUrlGet(const QString& url, const QString& header = "");
-    Q_INVOKABLE void requestUrlPost(const QString& url, const QString& data, const QString& header = "");
-
-
 private Q_SLOTS:
-    void requestCompleted(QNetworkReply* networkReply);
-    void requestError(QNetworkReply::NetworkError errorCode);
+    void downloadCompleted(QNetworkReply* networkReply);
 
 signals:
-    void currentUrlChanged();
-    void currentStatuscodeChanged();
-    void currentContentChanged();
     void dataFetched();
 
 private:
-    QNetworkAccessManager* network_;
-    QUrl currentUrl_;
-    int currentStatuscode_;
-    QString currentContent_;
-
-    void setHeader(QNetworkRequest& request, const QString& headerString);
-    void connectToError(QNetworkReply* reply);
+    QNetworkAccessManager* manager_;
+    void fetch();
 };
 
 #endif // NETWORKHANDLER_HH
-
-
-
