@@ -1,11 +1,10 @@
 #ifndef SMEARAPI_HH
 #define SMEARAPI_HH
 
-#include "QNetworkAccessManager"
-#include "QObject"
-#include "QDebug"
-#include "QNetworkReply"
-#include "QNetworkRequest"
+#include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
 class QNetworkAccessManager;
 

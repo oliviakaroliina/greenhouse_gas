@@ -1,12 +1,5 @@
 #include "smearapi.hh"
-
-#include <QByteArray>
 #include <QDebug>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QStringList>
-#include <QVariant>
 
 smearApi::smearApi(QObject *parent) :
     QObject{ parent }
