@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->restartPushButton, &QPushButton::clicked, this,
             &MainWindow::restart);
 
-    //readSelections();
+    readSelections();
 }
 
 MainWindow::~MainWindow()
@@ -319,55 +319,52 @@ void MainWindow::readSelections()
         int rowNumber = 1;
         while (getline(file_object, row))
         {
-            if (row != "")
-            {
-                std::vector<std::string> parts = split(row, ':', true);
+            std::vector<std::string> parts = split(row, ':', true);
 
-                // Based on the row's information, the right information
-                // will be added to UI
-                if (rowNumber == 1)
-                {
-                    setSelections(1, 0, 0, 0, parts);
-                }
-                else if (rowNumber == 2)
-                {
-                    setSelections(0, 1, 0, 0, parts);
-                }
-                else if (rowNumber == 3)
-                {
-                    setSelections(0, 0, 1, 0, parts);
-                }
-                else if (rowNumber == 4)
-                {
-                    setDatatype(parts.at(1));
-                }
-                else if (rowNumber == 5)
-                {
-                    setSelections(0, 0, 0, 1, parts);
-                }
-                else if (rowNumber == 6)
-                {
-                    // Indexing starts from 1, because the first word in
-                    // the row is metadata (explains the data type), so
-                    // the actual information starts from the second word
-                    setDate(1, 0, 0, 0, std::stoi(parts.at(1)),
-                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
-                }
-                else if (rowNumber == 7)
-                {
-                    setDate(0, 1, 0, 0, std::stoi(parts.at(1)),
-                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
-                }
-                else if (rowNumber == 8)
-                {
-                    setDate(0, 0, 1, 0, std::stoi(parts.at(1)),
-                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
-                }
-                else if (rowNumber == 9)
-                {
-                    setDate(0, 0, 0, 1, std::stoi(parts.at(1)),
-                            std::stoi(parts.at(2)), std::stoi(parts.at(3)));
-                }
+            // Based on the row's information, the right information
+            // will be added to UI
+            if (parts.at(0) == "apis")
+            {
+                setSelections(1, 0, 0, 0, parts);
+            }
+            else if (parts.at(0) == "stations")
+            {
+                setSelections(0, 1, 0, 0, parts);
+            }
+            else if (parts.at(0) == "gases")
+            {
+                setSelections(0, 0, 1, 0, parts);
+            }
+            else if (parts.at(0) == "datatype")
+            {
+                setDatatype(parts.at(1));
+            }
+            else if (parts.at(0) == "datasets")
+            {
+                setSelections(0, 0, 0, 1, parts);
+            }
+            else if (parts.at(0) == "smearstart")
+            {
+                // Indexing starts from 1, because the first word in
+                // the row is metadata (explains the data type), so
+                // the actual information starts from the second word
+                setDate(1, 0, 0, 0, std::stoi(parts.at(1)),
+                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+            }
+            else if (parts.at(0) == "smearend")
+            {
+                setDate(0, 1, 0, 0, std::stoi(parts.at(1)),
+                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+            }
+            else if (parts.at(0) == "statfistart")
+            {
+                setDate(0, 0, 1, 0, std::stoi(parts.at(1)),
+                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+            }
+            else if (parts.at(0) == "statfiend")
+            {
+                setDate(0, 0, 0, 1, std::stoi(parts.at(1)),
+                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
             }
             ++rowNumber;
         }

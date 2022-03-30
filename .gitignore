@@ -36,7 +36,6 @@ Makefile*
 /*/*/build*
 *.DS_Store
 *.qmake.stash
-*greenhouse_gas
 
 # Qt unit tests
 target_wrapper.*
