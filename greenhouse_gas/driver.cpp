@@ -19,15 +19,16 @@ void driver::createApis()
 {
     qDebug() << "createapis";
     smearApi smear;
+    connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
+
     statfiApi statfi;
 
-    connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
 }
 
 void driver::createDataHandler()
 {
     dataHandler datahandler;
-    connect(&datahandler,&dataHandler::dataFetchedFromApis,this,&driver::createPlotWindow);
+    connect(&datahandler,&dataHandler::dataHandled,this,&driver::createPlotWindow);
 }
 
 void driver::createPlotWindow()

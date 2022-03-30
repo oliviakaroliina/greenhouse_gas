@@ -5,8 +5,22 @@ dataHandler::dataHandler()
 
 }
 
-void dataHandler::fetchDataFromApis()
+void dataHandler::handleSmearData()
 {
-    emit dataFetchedFromApis();
+    smearDataHandled = true;
+    areAllDataHandled();
+}
 
+void dataHandler::handleStatfiData()
+{
+    statfiDataHandled = true;
+    areAllDataHandled();
+}
+
+void dataHandler::areAllDataHandled()
+{
+    if (smearDataHandled and statfiDataHandled)
+    {
+        emit dataHandled();
+    }
 }
