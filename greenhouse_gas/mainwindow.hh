@@ -103,6 +103,10 @@ private:
     // Saves selections to the next time when the program is used
     void saveSelections();
 
+    // Clears all selections so that the next time when program is runned,
+    // it won't remember the user's previous selections.
+    void clearAll();
+
     // Reads selections from file and puts them into the UI
     void readSelections();
 

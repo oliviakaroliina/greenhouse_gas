@@ -176,11 +176,26 @@ void MainWindow::visualize()
     {
         saveSelections();
     }
+    // Clear all -checkbox is checked
+    else if (ui->clearAllCheckBox->checkState()!=0)
+    {
+        clearAll();
+    }
     emit visualizeButtonPressed();
 }
 
 void MainWindow::restart()
 {
+    // Save selections -checkbox is checked
+    if (ui->saveSelectionsCheckBox->checkState()!=0)
+    {
+        saveSelections();
+    }
+    // Clear all -checkbox is checked
+    else if (ui->clearAllCheckBox->checkState()!=0)
+    {
+        clearAll();
+    }
     // Quits the previous program
     qApp->quit();
     // Starts a new one
@@ -309,6 +324,15 @@ void MainWindow::saveSelections()
     file_object.close();
 }
 
+void MainWindow::clearAll()
+{
+    // Opens the file for writing nothing
+    std::ofstream fileObject;
+    fileObject.open(SELECTIONS_FILE, std::ofstream::out | std::ofstream::trunc);
+    // Closes the file
+    fileObject.close();
+}
+
 void MainWindow::readSelections()
 {
     // Opens the file for reading
@@ -335,7 +359,7 @@ void MainWindow::readSelections()
             {
                 setSelections(0, 0, 1, 0, parts);
             }
-            else if (parts.at(0) == "datatype")
+            else if (parts.at(0) == "datatype" and parts.size()==2)
             {
                 setDatatype(parts.at(1));
             }
@@ -371,6 +395,7 @@ void MainWindow::readSelections()
         // Closes the file
         file_object.close();
     }
+    disableButtons();
 }
 
 std::vector<std::string> MainWindow::split(const std::string& s, const char&

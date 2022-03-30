@@ -502,6 +502,19 @@
      <string>Restart</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="clearAllCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>490</y>
+      <width>81</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>clear all</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
