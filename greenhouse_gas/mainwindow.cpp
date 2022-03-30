@@ -297,7 +297,7 @@ void MainWindow::saveSelections()
     QDate statfiend = getStatfiEndDate();
 
     // Opens the file for writing
-    std::ofstream file_object(SELECTIONS_FILE);
+    std::ofstream fileObject(SELECTIONS_FILE);
 
     // Writes the information to the file
     // - The metadata is first in the row, and after that :
@@ -305,39 +305,39 @@ void MainWindow::saveSelections()
     // - Vectors contents are separated with :
     // - Dates are represented as day:month:year
 
-    file_object << "apis:";
+    fileObject << "apis:";
     for (QString& api : apis)
     {
-        file_object << api.toStdString() << ":";
+        fileObject << api.toStdString() << ":";
     }
-    file_object << std::endl << "stations:";
+    fileObject << std::endl << "stations:";
     for (QString& station : stations)
     {
-        file_object << station.toStdString() << ":";
+        fileObject << station.toStdString() << ":";
     }
-    file_object << std::endl << "gases:";
+    fileObject << std::endl << "gases:";
     for (QString& gas : gases)
     {
-        file_object << gas.toStdString() << ":";
+        fileObject << gas.toStdString() << ":";
     }
-    file_object << std::endl << "datatype:" << datatype.toStdString() <<
+    fileObject << std::endl << "datatype:" << datatype.toStdString() <<
                    std::endl << "datasets:";
     for (QString& dataset : datasets)
     {
-        file_object << dataset.toStdString() << ":";
+        fileObject << dataset.toStdString() << ":";
     }
-    file_object << std::endl << "smearstart:";
-    file_object << smearstart.day() << ":" << smearstart.month() << ":" <<
+    fileObject << std::endl << "smearstart:";
+    fileObject << smearstart.day() << ":" << smearstart.month() << ":" <<
                    smearstart.year() << ":" << std::endl << "smearend:";
-    file_object << smearend.day() << ":" << smearend.month() << ":" <<
+    fileObject << smearend.day() << ":" << smearend.month() << ":" <<
                    smearend.year() << ":" << std::endl << "statfistart:";
-    file_object << statfistart.day() << ":" << statfistart.month() << ":" <<
+    fileObject << statfistart.day() << ":" << statfistart.month() << ":" <<
                    statfistart.year() << ":" << std::endl << "statfiend:";
-    file_object << statfiend.day() << ":" << statfiend.month() << ":" <<
+    fileObject << statfiend.day() << ":" << statfiend.month() << ":" <<
                    statfiend.year() << ":" << std::endl;
 
     // Closes the file
-    file_object.close();
+    fileObject.close();
 }
 
 void MainWindow::clearAll()
@@ -352,12 +352,12 @@ void MainWindow::clearAll()
 void MainWindow::readSelections()
 {
     // Opens the file for reading
-    std::ifstream file_object(SELECTIONS_FILE);
-    if (file_object)
+    std::ifstream fileObject(SELECTIONS_FILE);
+    if (fileObject)
     {
         std::string row;
         int rowNumber = 1;
-        while (getline(file_object, row))
+        while (getline(fileObject, row))
         {
             std::vector<std::string> parts = split(row, ':', true);
 
@@ -409,13 +409,13 @@ void MainWindow::readSelections()
             ++rowNumber;
         }
         // Closes the file
-        file_object.close();
+        fileObject.close();
     }
     disableButtons();
 }
 
 std::vector<std::string> MainWindow::split(const std::string& s, const char&
-                                           separator, bool ignore_empty)
+                                           separator, bool ignoreEmpty)
 {
     std::vector<std::string> result;
     // For saving the rest of the string after splitting
@@ -424,20 +424,20 @@ std::vector<std::string> MainWindow::split(const std::string& s, const char&
     while (tmp.find(separator) != std::string::npos)
     {
         // Saves the part to a variable
-        std::string new_part = tmp.substr(0, tmp.find(separator));
+        std::string newPart = tmp.substr(0, tmp.find(separator));
 
         // Saves rest of the string without the part to the variable
         tmp = tmp.substr(tmp.find(separator)+1, tmp.size());
 
         // If the part is empty and the empty parts are wanted too
         // or vice versa, adds the part to the result
-        if (not(ignore_empty and new_part.empty()))
+        if (not(ignoreEmpty and newPart.empty()))
         {
-            result.push_back(new_part);
+            result.push_back(newPart);
         }
     }
     // Adds the last part to the result
-    if (not(ignore_empty and tmp.empty()))
+    if (not(ignoreEmpty and tmp.empty()))
     {
         result.push_back(tmp);
     }

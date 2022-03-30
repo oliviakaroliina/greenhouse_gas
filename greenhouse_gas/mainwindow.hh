@@ -122,7 +122,7 @@ private:
     // Returns: a vector of strings, that has been splitted from s in spots
     //          where separators are
     std::vector<std::string> split(const std::string& s, const char& separator,
-                                   bool ignore_empty);
+                                   bool ignoreEmpty);
 
     // Parameters:
     // - apis: if information to be added to UI are apis
