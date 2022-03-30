@@ -66,8 +66,12 @@ private slots:
     // Starts the next window
     void visualize();
 
-    // Restarts the program
+    // Checks for save selections and clear all, and
+    // restarts the program
     void restart();
+
+    // Checks for save selections and clear all
+    void quitButtonClicked();
 
 private:
     Ui::MainWindow *ui;

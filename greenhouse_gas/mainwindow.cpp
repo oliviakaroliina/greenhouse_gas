@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
             &MainWindow::visualize);
     connect(ui->restartPushButton, &QPushButton::clicked, this,
             &MainWindow::restart);
+    connect(ui->quitPushButton, &QPushButton::clicked, this,
+            &MainWindow::quitButtonClicked);
 
     readSelections();
 }
@@ -200,6 +202,20 @@ void MainWindow::restart()
     qApp->quit();
     // Starts a new one
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
+void MainWindow::quitButtonClicked()
+{
+    // Save selections -checkbox is checked
+    if (ui->saveSelectionsCheckBox->checkState()!=0)
+    {
+        saveSelections();
+    }
+    // Clear all -checkbox is checked
+    else if (ui->clearAllCheckBox->checkState()!=0)
+    {
+        clearAll();
+    }
 }
 
 void MainWindow::disableStatfiButtons()
