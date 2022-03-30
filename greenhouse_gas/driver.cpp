@@ -7,7 +7,7 @@ driver::driver(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    QObject::connect(&w,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
+    connect(&w,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
 
     errorHandler errorhandler;
 
@@ -17,16 +17,17 @@ driver::driver(int argc, char *argv[])
 
 void driver::createApis()
 {
+    qDebug() << "createapis";
     smearApi smear;
     statfiApi statfi;
 
-    QObject::connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
+    connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
 }
 
 void driver::createDataHandler()
 {
     dataHandler datahandler;
-    QObject::connect(&datahandler,&dataHandler::dataFetchedFromApis,this,&driver::createPlotWindow);
+    connect(&datahandler,&dataHandler::dataFetchedFromApis,this,&driver::createPlotWindow);
 }
 
 void driver::createPlotWindow()

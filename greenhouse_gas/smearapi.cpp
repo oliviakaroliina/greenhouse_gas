@@ -17,13 +17,14 @@ smearApi::~smearApi()
 
 void smearApi::fetch()
 {
+    qDebug() << "smearapi fetch";
     manager_->get(QNetworkRequest(
                   QUrl("https://smear-backend.rahtiapp.fi/search/station")));
 }
 
 void smearApi::downloadCompleted(QNetworkReply *networkReply)
 {
-    qDebug() << "downloadCompleted slottiin päästy";
+    qDebug() << "smearapi downloadCompleted";
     QString response = networkReply->readAll();
     networkReply->deleteLater();
     qDebug() << response;
