@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->restartPushButton, &QPushButton::clicked, this,
             &MainWindow::restart);
 
-    readSelections();
+    //readSelections();
 }
 
 MainWindow::~MainWindow()
@@ -83,19 +83,19 @@ QVector<QString> MainWindow::getGreenhouseGases()
 
 QString MainWindow::getDatatype()
 {
-    if (ui->rawRadioButton->isDown())
+    if (ui->rawRadioButton->isChecked())
     {
         return RAW;
     }
-    else if (ui->averageRadioButton->isDown())
+    else if (ui->averageRadioButton->isChecked())
     {
         return AVERAGE;
     }
-    else if (ui->minimumRadioButton->isDown())
+    else if (ui->minimumRadioButton->isChecked())
     {
         return MINIMUM;
     }
-    else if (ui->maximumRadioButton->isDown())
+    else if (ui->maximumRadioButton->isChecked())
     {
         return MAXIMUM;
     }
@@ -174,8 +174,7 @@ void MainWindow::visualize()
     // Save selections -checkbox is checked
     if (ui->saveSelectionsCheckBox->checkState()!=0)
     {
-        // POISTA ALEMMAT KOMMENTTIMERKIT, KUN OHJELMA EI CRASHAA
-        //saveSelections();
+        saveSelections();
     }
     emit visualizeButtonPressed();
 }
