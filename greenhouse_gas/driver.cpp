@@ -20,7 +20,7 @@ void driver::createApis()
     smearApi smear;
     statfiApi statfi;
 
-    QObject::connect(&smear,&smearApi::dataFetched,this,&driver::createDataHandler);
+    QObject::connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
 }
 
 void driver::createDataHandler()

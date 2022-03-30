@@ -2,9 +2,7 @@
 #define SMEARAPI_HH
 
 #include <QObject>
-#include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QNetworkRequest>
 
 class QNetworkAccessManager;
 
@@ -20,7 +18,7 @@ private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);
 
 signals:
-    void dataFetched();
+    void dataFetchedFromSmear();
 
 private:
     QNetworkAccessManager* manager_;

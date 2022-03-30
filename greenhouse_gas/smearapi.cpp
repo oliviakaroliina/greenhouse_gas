@@ -27,5 +27,5 @@ void smearApi::downloadCompleted(QNetworkReply *networkReply)
     QString response = networkReply->readAll();
     networkReply->deleteLater();
     qDebug() << response;
-    //emit dataFetched();
+    //emit dataFetchedFromSmear();
 }
