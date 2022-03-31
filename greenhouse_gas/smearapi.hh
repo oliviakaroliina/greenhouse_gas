@@ -23,6 +23,7 @@ signals:
 private:
     QNetworkAccessManager* manager_;
     void fetch(QString start, QString end, QString aggregation, QString gas_station);
+    //void get_parameters();
 };
 
 #endif // NETWORKHANDLER_HH
