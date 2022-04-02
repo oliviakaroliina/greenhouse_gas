@@ -220,6 +220,7 @@ void MainWindow::quitButtonClicked()
 
 void MainWindow::disableStatfiButtons()
 {
+    // Disables buttons
     ui->datasetLabel->setEnabled(false);
     ui->inTonnesCheckBox->setEnabled(false);
     ui->indexedCheckBox->setEnabled(false);
@@ -229,10 +230,17 @@ void MainWindow::disableStatfiButtons()
     ui->statfiEndLabel->setEnabled(false);
     ui->statfiStartCalendar->setEnabled(false);
     ui->statfiEndCalendar->setEnabled(false);
+
+    // Removes possible selections
+    ui->inTonnesCheckBox->setCheckState(Qt::Unchecked);
+    ui->indexedCheckBox->setCheckState(Qt::Unchecked);
+    ui->intensityCheckBox->setCheckState(Qt::Unchecked);
+    ui->intensityIndexedCheckBox->setCheckState(Qt::Unchecked);
 }
 
 void MainWindow::disableSmearButtons()
 {
+    // Disables buttons
     ui->stationLabel->setEnabled(false);
     ui->hyytialaCheckBox->setEnabled(false);
     ui->kumpulaCheckBox->setEnabled(false);
@@ -250,6 +258,30 @@ void MainWindow::disableSmearButtons()
     ui->smearEndLabel->setEnabled(false);
     ui->smearStartCalendar->setEnabled(false);
     ui->smearEndCalendar->setEnabled(false);
+
+    // Removes possible selections
+    ui->hyytialaCheckBox->setCheckState(Qt::Unchecked);
+    ui->kumpulaCheckBox->setCheckState(Qt::Unchecked);
+    ui->varrioCheckBox->setCheckState(Qt::Unchecked);
+    ui->CO2CheckBox->setCheckState(Qt::Unchecked);
+    ui->SO2CheckBox->setCheckState(Qt::Unchecked);
+    ui->NOxCheckBox->setCheckState(Qt::Unchecked);
+
+    ui->rawRadioButton->setAutoExclusive(false);
+    ui->rawRadioButton->setChecked(false);
+    ui->rawRadioButton->setAutoExclusive(true);
+
+    ui->averageRadioButton->setAutoExclusive(false);
+    ui->averageRadioButton->setChecked(false);
+    ui->averageRadioButton->setAutoExclusive(true);
+
+    ui->minimumRadioButton->setAutoExclusive(false);
+    ui->minimumRadioButton->setChecked(false);
+    ui->minimumRadioButton->setAutoExclusive(true);
+
+    ui->maximumRadioButton->setAutoExclusive(false);
+    ui->maximumRadioButton->setChecked(false);
+    ui->maximumRadioButton->setAutoExclusive(true);
 }
 
 void MainWindow::enableAllButtons()
