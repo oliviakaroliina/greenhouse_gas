@@ -19,6 +19,9 @@ private slots:
     void createApis();
     void createDataHandler();
     void createPlotWindow();
+
+private:
+    MainWindow *w = nullptr;
 };
 
 #endif // DRIVER_HH

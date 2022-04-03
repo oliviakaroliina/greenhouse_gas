@@ -6,19 +6,19 @@
 driver::driver(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    connect(&w,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
+    w = new MainWindow;
+    connect(w,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
 
     errorHandler errorhandler;
 
-    w.show();
+    w->show();
     a.exec();
 }
 
 void driver::createApis()
 {
     qDebug() << "createapis";
-    smearApi smear;
+    smearApi smear = smearApi(nullptr, w);
     connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
 
     statfiApi statfi;

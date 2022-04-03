@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkReply>
+#include "mainwindow.hh"
 
 class QNetworkAccessManager;
 
@@ -11,7 +12,7 @@ class smearApi : public QObject
     Q_OBJECT
 
 public:
-    explicit smearApi(QObject* parent = nullptr);
+    explicit smearApi(QObject* parent = nullptr, MainWindow* mw = nullptr);
     ~smearApi();
 
 private Q_SLOTS:
@@ -23,7 +24,7 @@ signals:
 private:
     QNetworkAccessManager* manager_;
     void fetch(QString start, QString end, QString aggregation, QString gas_station);
-    //void get_parameters();
+    void get_parameters(MainWindow* mw);
 };
 
 #endif // NETWORKHANDLER_HH
