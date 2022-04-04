@@ -14,6 +14,7 @@ class driver : public QObject
     Q_OBJECT
 public:
     driver(int argc, char *argv[]);
+    ~driver();
 
 private slots:
     void createApis();
@@ -22,6 +23,8 @@ private slots:
 
 private:
     MainWindow *w = nullptr;
+    smearApi* smear = nullptr;
+    statfiApi* statfi = nullptr;
 };
 
 #endif // DRIVER_HH

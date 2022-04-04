@@ -15,13 +15,27 @@ driver::driver(int argc, char *argv[])
     a.exec();
 }
 
+driver::~driver()
+{
+    if (smear != nullptr) {
+        delete smear;
+    }
+    if (statfi != nullptr) {
+        delete statfi;
+    }
+}
+
 void driver::createApis()
 {
-    qDebug() << "createapis";
-    smearApi* smear = new smearApi(nullptr, w);
-    connect(smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
-
-    statfiApi statfi;
+    QVector<QString> apis = w->getApis();
+    if (std::find(apis.begin(), apis.end(), "smear") != apis.end()) {
+        smear = new smearApi(nullptr, w);
+        //connect(smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
+    }
+    if (std::find(apis.begin(), apis.end(), "statfi") != apis.end()) {
+        statfi = new statfiApi(nullptr);
+    }
+    createDataHandler();
 
 }
 

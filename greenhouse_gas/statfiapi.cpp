@@ -16,8 +16,11 @@ statfiApi::~statfiApi()
 
 void statfiApi::fetch()
 {
+    QString url_str = "";
+    url_str.append("https://pxnet2.stat.fi/PXWeb/api/v1/en/ymp/taulukot/Kokodata.px");
+
     manager_->get(QNetworkRequest(
-                  QUrl("")));
+                  QUrl(url_str)));
 }
 
 void statfiApi::downloadCompleted(QNetworkReply *networkReply)
