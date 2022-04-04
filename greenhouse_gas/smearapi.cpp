@@ -10,7 +10,7 @@ smearApi::smearApi(QObject *parent, MainWindow *mw) :
     connect(manager_, &QNetworkAccessManager::finished, this,
             &smearApi::downloadCompleted);
     get_parameters(mw);
-    fetch("2022-01-19T14:00:00.000","2022-01-19T17:00:00.000", "MAX", "KUM_EDDY.av_c_ep");
+    //fetch("2022-01-19T14:00:00.000","2022-01-19T17:00:00.000", "MAX", "KUM_EDDY.av_c_ep");
 }
 
 smearApi::~smearApi()
@@ -32,7 +32,9 @@ void smearApi::fetch(QString start, QString end, QString aggregation, QString ga
     url_str.append(end);
     url_str.append("&tablevariable=");
     url_str.append(gas_station);
-    //manager_->get(QNetworkRequest(QUrl(url_str)));
+    qDebug() << url_str;
+    manager_->get(QNetworkRequest(QUrl(url_str)));
+    qDebug() << "?";
 }
 
 void smearApi::get_parameters(MainWindow *mw)
@@ -83,6 +85,7 @@ void smearApi::get_parameters(MainWindow *mw)
             fetch(mw->getSmearStartDate().toString(Qt::ISODate),mw->getSmearEndDate().toString(Qt::ISODate),
                   mw->getDatatype(), "KUM_META.NO"); }
     }
+    fetch("2022-01-19T14:00:00.000","2022-01-19T17:00:00.000", "MAX", "KUM_EDDY.av_c_ep");
 }
 
 void smearApi::downloadCompleted(QNetworkReply *networkReply)

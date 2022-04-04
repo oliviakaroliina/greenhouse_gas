@@ -18,8 +18,8 @@ driver::driver(int argc, char *argv[])
 void driver::createApis()
 {
     qDebug() << "createapis";
-    smearApi smear = smearApi(nullptr, w);
-    connect(&smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
+    smearApi* smear = new smearApi(nullptr, w);
+    connect(smear,&smearApi::dataFetchedFromSmear,this,&driver::createDataHandler);
 
     statfiApi statfi;
 
