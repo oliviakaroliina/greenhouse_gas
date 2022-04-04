@@ -32,7 +32,7 @@ void smearApi::fetch(QString start, QString end, QString aggregation, QString ga
     url_str.append(end);
     url_str.append("&tablevariable=");
     url_str.append(gas_station);
-    manager_->get(QNetworkRequest(QUrl(url_str)));
+    //manager_->get(QNetworkRequest(QUrl(url_str)));
 }
 
 void smearApi::get_parameters(MainWindow *mw)
