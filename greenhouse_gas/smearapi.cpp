@@ -46,16 +46,19 @@ void smearApi::get_parameters(MainWindow *mw)
         qDebug() << "smear valittu";
     }
 
-    auto varrio = std::find(mw->getMonitoringStations().begin(), mw->getMonitoringStations().end(), "varrio") != mw->getMonitoringStations().end();
-    auto hyytiala = std::find(mw->getMonitoringStations().begin(), mw->getMonitoringStations().end(), "hyytiala") != mw->getMonitoringStations().end();
-    auto kumpula = std::find(mw->getMonitoringStations().begin(), mw->getMonitoringStations().end(), "kumpula") != mw->getMonitoringStations().end();
-    auto co2 = std::find(mw->getGreenhouseGases().begin(), mw->getGreenhouseGases().end(), "co2") != mw->getGreenhouseGases().end();
-    auto so2 = std::find(mw->getGreenhouseGases().begin(), mw->getGreenhouseGases().end(), "so2") != mw->getGreenhouseGases().end();
-    auto nox = std::find(mw->getGreenhouseGases().begin(), mw->getGreenhouseGases().end(), "nox") != mw->getGreenhouseGases().end();
+    QVector<QString> stations = mw->getMonitoringStations();
+    QVector<QString> gases = mw->getGreenhouseGases();
+    auto varrio = std::find(stations.begin(), stations.end(), "varrio") != stations.end();
+    auto hyytiala = std::find(stations.begin(), stations.end(), "hyytiala") != stations.end();
+    auto kumpula = std::find(stations.begin(), stations.end(), "kumpula") != stations.end();
+    auto co2 = std::find(gases.begin(), gases.end(), "co2") != gases.end();
+    auto so2 = std::find(gases.begin(), gases.end(), "so2") != gases.end();
+    auto nox = std::find(gases.begin(), gases.end(), "nox") != gases.end();
 
     qDebug() << mw->getApis();
+    QVector<QString> apis = mw->getApis();
     // Jos smear valittuna nii sit katotaan löytyykö mitä asemia ja kaasuja: saadaan gas_station muuttuja apia varten
-    if (std::find(mw->getApis().begin(), mw->getApis().end(), "smear") != mw->getApis().end()) {
+    if (std::find(apis.begin(), apis.end(), "smear") != apis.end()) {
         if (varrio and co2) {
             fetch(mw->getSmearStartDate().toString(Qt::ISODate),mw->getSmearEndDate().toString(Qt::ISODate),
                   mw->getDatatype(), "VAR_EDDY.av_c"); }
@@ -85,7 +88,7 @@ void smearApi::get_parameters(MainWindow *mw)
             fetch(mw->getSmearStartDate().toString(Qt::ISODate),mw->getSmearEndDate().toString(Qt::ISODate),
                   mw->getDatatype(), "KUM_META.NO"); }
     }
-    fetch("2022-01-19T14:00:00.000","2022-01-19T17:00:00.000", "MAX", "KUM_EDDY.av_c_ep");
+    //fetch("2022-01-17T14:00:00.000","2022-01-19T17:00:00.000", "MAX", "KUM_EDDY.av_c_ep");
 }
 
 void smearApi::downloadCompleted(QNetworkReply *networkReply)
