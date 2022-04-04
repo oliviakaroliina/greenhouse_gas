@@ -2,6 +2,7 @@
 #include "mainwindow.hh"
 #include <QDebug>
 #include <iostream>
+#include <QTime>
 
 smearApi::smearApi(QObject *parent, MainWindow *mw) :
     QObject{ parent }
@@ -9,7 +10,8 @@ smearApi::smearApi(QObject *parent, MainWindow *mw) :
     manager_ = new QNetworkAccessManager(this);
     connect(manager_, &QNetworkAccessManager::finished, this,
             &smearApi::downloadCompleted);
-    getParameters(mw);
+    mw_ = mw;
+    getParameters();
 }
 
 smearApi::~smearApi()
@@ -19,33 +21,50 @@ smearApi::~smearApi()
 
 QVector<QString> smearApi::getResponse()
 {
-    return response;
+    return response_;
 }
 
 void smearApi::fetch(QString start, QString end, QString aggregation,
                      QString gas_station)
 {
-    QString url_str = "";
-    url_str.append("https://smear-backend.rahtiapp.fi/search/timeseries?"
+    QString url = "";
+    url.append("https://smear-backend.rahtiapp.fi/search/timeseries?"
                    "aggregation=");
-    url_str.append(aggregation);
-    url_str.append("&interval=60");
-    url_str.append("&from=");
-    url_str.append(start);
-    url_str.append("T00:00:00.000");
-    url_str.append("&to=");
-    url_str.append(end);
-    url_str.append("T23:59:59.000");
-    url_str.append("&tablevariable=");
-    url_str.append(gas_station);
+    url.append(aggregation);
+    url.append("&interval=60");
+    url.append("&from=");
+    url.append(start);
+    url.append("T00:00:00.000");
+    url.append("&to=");
+    url.append(end);
 
-    manager_->get(QNetworkRequest(QUrl(url_str)));
+    // Check if the end date is today
+    if (QDate::currentDate() == mw_->getSmearEndDate())
+    {
+        url.append("T");
+
+        QTime currentTime = QTime::currentTime();
+        QString time = currentTime.toString("hh:mm:ss.zzz");
+        url.append(time);
+    }
+    else
+    {
+        // If the end date is not today, the time will be the end of the end
+        // date
+        url.append("T23:59:59.000");
+    }
+
+    url.append("&tablevariable=");
+    url.append(gas_station);
+
+    manager_->get(QNetworkRequest(QUrl(url)));
 }
 
-void smearApi::getParameters(MainWindow *mw)
+void smearApi::getParameters()
 {
-    QVector<QString> stations = mw->getMonitoringStations();
-    QVector<QString> gases = mw->getGreenhouseGases();
+    QVector<QString> stations = mw_->getMonitoringStations();
+    QVector<QString> gases = mw_->getGreenhouseGases();
+
     bool varrio = std::find(stations.begin(), stations.end(), VARRIO) !=
                   stations.end();
     bool hyytiala = std::find(stations.begin(), stations.end(), "hyytiala") !=
@@ -58,46 +77,46 @@ void smearApi::getParameters(MainWindow *mw)
 
     // Finds the correct information related to certain station and gas
     if (varrio and co2) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "VAR_EDDY.av_c"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "VAR_EDDY.av_c"); }
     if (varrio and so2) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "VAR_META.SO2_1"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "VAR_META.SO2_1"); }
     if (varrio and nox) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "VAR_META.NO_1"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "VAR_META.NO_1"); }
     if (hyytiala and co2) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "HYY_META.CO2icos168"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "HYY_META.CO2icos168"); }
     if (hyytiala and so2) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "HYY_META.SO2168"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "HYY_META.SO2168"); }
     if (hyytiala and nox) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "HYY_META.NO168"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "HYY_META.NO168"); }
     if (kumpula and co2) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "KUM_EDDY.av_c_ep"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "KUM_EDDY.av_c_ep"); }
     if (kumpula and so2) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "KUM_META.SO_2"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "KUM_META.SO_2"); }
     if (kumpula and nox) {
-        fetch(mw->getSmearStartDate().toString(Qt::ISODate),
-              mw->getSmearEndDate().toString(Qt::ISODate),
-              mw->getDatatype(), "KUM_META.NO"); }
+        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
+              mw_->getSmearEndDate().toString(Qt::ISODate),
+              mw_->getDatatype(), "KUM_META.NO"); }
 }
 
 void smearApi::downloadCompleted(QNetworkReply *networkReply)
 {
-    response.push_back(networkReply->readAll());
-    qDebug() << response;
+    response_.push_back(networkReply->readAll());
+    qDebug() << response_;
     networkReply->deleteLater();
 }

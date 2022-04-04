@@ -22,12 +22,13 @@ private Q_SLOTS:
 
 private:
     QNetworkAccessManager* manager_;
-    QVector<QString> response = {};
+    QVector<QString> response_ = {};
+    MainWindow* mw_ = nullptr;
 
     void fetch(QString start, QString end, QString aggregation,
                QString gas_station);
 
-    void getParameters(MainWindow* mw);
+    void getParameters();
 
     const QString VARRIO = "varrio";
 };
