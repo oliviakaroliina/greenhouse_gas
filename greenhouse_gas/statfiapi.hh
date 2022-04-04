@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkReply>
+#include "mainwindow.hh"
 
 class QNetworkAccessManager;
 
@@ -11,14 +12,11 @@ class statfiApi : public QObject
     Q_OBJECT
 
 public:
-    explicit statfiApi(QObject* parent = nullptr);
+    explicit statfiApi(QObject* parent = nullptr, MainWindow* mw = nullptr);
     ~statfiApi();
 
 private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);
-
-signals:
-    void dataFetchedFromStatfi();
 
 private:
     QNetworkAccessManager* manager_;

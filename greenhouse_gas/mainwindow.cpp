@@ -87,19 +87,19 @@ QString MainWindow::getDatatype()
 {
     if (ui->rawRadioButton->isChecked())
     {
-        return RAW;
+        return "NONE";
     }
     else if (ui->averageRadioButton->isChecked())
     {
-        return AVERAGE;
+        return "ARITHMETIC";
     }
     else if (ui->minimumRadioButton->isChecked())
     {
-        return MINIMUM;
+        return "MIN";
     }
     else if (ui->maximumRadioButton->isChecked())
     {
-        return MAXIMUM;
+        return "MAX";
     }
     else
     {

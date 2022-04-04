@@ -22,9 +22,12 @@ private slots:
     void createPlotWindow();
 
 private:
-    MainWindow *w = nullptr;
+    MainWindow *mw = nullptr;
     smearApi* smear = nullptr;
     statfiApi* statfi = nullptr;
+    errorHandler* errorhandler = nullptr;
+    dataHandler* datahandler = nullptr;
+    PlotWindow* plotwindow = nullptr;
 };
 
 #endif // DRIVER_HH

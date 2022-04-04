@@ -15,16 +15,21 @@ public:
     explicit smearApi(QObject* parent = nullptr, MainWindow* mw = nullptr);
     ~smearApi();
 
+    QVector<QString> getResponse();
+
 private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);
 
-signals:
-    void dataFetchedFromSmear();
-
 private:
     QNetworkAccessManager* manager_;
-    void fetch(QString start, QString end, QString aggregation, QString gas_station);
-    void get_parameters(MainWindow* mw);
+    QVector<QString> response = {};
+
+    void fetch(QString start, QString end, QString aggregation,
+               QString gas_station);
+
+    void getParameters(MainWindow* mw);
+
+    const QString VARRIO = "varrio";
 };
 
 #endif // NETWORKHANDLER_HH

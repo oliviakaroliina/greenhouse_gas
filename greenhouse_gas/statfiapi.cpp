@@ -1,6 +1,6 @@
 #include "statfiapi.hh"
 
-statfiApi::statfiApi(QObject *parent) :
+statfiApi::statfiApi(QObject *parent, MainWindow* mw) :
     QObject{ parent }
 {
     manager_ = new QNetworkAccessManager(this);
@@ -27,5 +27,4 @@ void statfiApi::downloadCompleted(QNetworkReply *networkReply)
 {
     //QString response = networkReply->readAll();
     networkReply->deleteLater();
-    //emit dataFetchedFromStatfi();
 }
