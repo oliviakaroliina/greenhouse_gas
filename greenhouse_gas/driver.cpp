@@ -41,12 +41,12 @@ void driver::createApis()
     if (std::find(apis.begin(), apis.end(), "statfi") != apis.end()) {
         statfi = new statfiApi(nullptr, mw);
     }
-    createDataHandler();
+    connect(smear,&smearApi::dataCollected,this,&driver::createDataHandler);
 }
 
 void driver::createDataHandler()
 {
-    datahandler = new dataHandler();
+    datahandler = new dataHandler(smear, statfi);
     connect(datahandler,&dataHandler::dataHandled,this,&driver::createPlotWindow);
 }
 

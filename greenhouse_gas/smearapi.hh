@@ -17,6 +17,9 @@ public:
 
     QVector<QString> getResponse();
 
+signals:
+    void dataCollected();
+
 private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);
 
@@ -24,6 +27,7 @@ private:
     QNetworkAccessManager* manager_;
     QVector<QString> response_ = {};
     MainWindow* mw_ = nullptr;
+    int selections_ = 0;
 
     void fetch(QString start, QString end, QString aggregation,
                QString gas_station);

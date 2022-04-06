@@ -21,6 +21,7 @@ smearApi::~smearApi()
 
 QVector<QString> smearApi::getResponse()
 {
+    qDebug() << "response";
     return response_;
 }
 
@@ -79,44 +80,57 @@ void smearApi::getParameters()
     if (varrio and co2) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "VAR_EDDY.av_c"); }
+              mw_->getDatatype(), "VAR_EDDY.av_c");
+              selections_++; }
     if (varrio and so2) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "VAR_META.SO2_1"); }
+              mw_->getDatatype(), "VAR_META.SO2_1");
+              selections_++; }
     if (varrio and nox) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "VAR_META.NO_1"); }
+              mw_->getDatatype(), "VAR_META.NO_1");
+              selections_++; }
     if (hyytiala and co2) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "HYY_META.CO2icos168"); }
+              mw_->getDatatype(), "HYY_META.CO2icos168");
+              selections_++; }
     if (hyytiala and so2) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "HYY_META.SO2168"); }
+              mw_->getDatatype(), "HYY_META.SO2168");
+              selections_++; }
     if (hyytiala and nox) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "HYY_META.NO168"); }
+              mw_->getDatatype(), "HYY_META.NO168");
+              selections_++; }
     if (kumpula and co2) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "KUM_EDDY.av_c_ep"); }
+              mw_->getDatatype(), "KUM_EDDY.av_c_ep");
+              selections_++; }
     if (kumpula and so2) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "KUM_META.SO_2"); }
+              mw_->getDatatype(), "KUM_META.SO_2");
+              selections_++; }
     if (kumpula and nox) {
         fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
               mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "KUM_META.NO"); }
+              mw_->getDatatype(), "KUM_META.NO");
+              selections_++; }
 }
 
 void smearApi::downloadCompleted(QNetworkReply *networkReply)
 {
     response_.push_back(networkReply->readAll());
-    qDebug() << response_;
+    //qDebug() << response_;
     networkReply->deleteLater();
+
+    if(response_.size() == selections_) {
+        emit dataCollected();
+    }
 }

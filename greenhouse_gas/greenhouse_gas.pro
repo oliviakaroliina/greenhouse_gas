@@ -20,7 +20,8 @@ SOURCES += \
     plotwindow.cpp \
     qcustomplot.cpp \
     smearapi.cpp \
-    statfiapi.cpp
+    statfiapi.cpp \
+    station.cpp
 
 HEADERS += \
     datahandler.hh \
@@ -30,7 +31,8 @@ HEADERS += \
     plotwindow.h \
     qcustomplot.h \
     smearapi.hh \
-    statfiapi.hh
+    statfiapi.hh \
+    station.hh
 
 FORMS += \
     mainwindow.ui \
