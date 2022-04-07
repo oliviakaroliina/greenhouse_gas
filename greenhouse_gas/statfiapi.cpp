@@ -59,8 +59,6 @@ void statfiApi::fetch()
 
     outerObject.insert("query", queryArray);
 
-    qDebug() << outerObject;
-
     QJsonDocument doc(outerObject);
     QByteArray data = doc.toJson();
 
@@ -69,7 +67,6 @@ void statfiApi::fetch()
 
 void statfiApi::downloadCompleted(QNetworkReply *networkReply)
 {
-    QString response = networkReply->readAll();
-    qDebug() << response;
+    //QString response = networkReply->readAll();
     networkReply->deleteLater();
 }
