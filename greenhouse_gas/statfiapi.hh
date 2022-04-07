@@ -20,6 +20,8 @@ private Q_SLOTS:
 
 private:
     QNetworkAccessManager* manager_;
+    MainWindow* mw_;
+
     void fetch();
 };
 
