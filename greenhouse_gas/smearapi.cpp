@@ -11,7 +11,7 @@ smearApi::smearApi(QObject *parent, MainWindow *mw) :
     connect(manager_, &QNetworkAccessManager::finished, this,
             &smearApi::downloadCompleted);
     mw_ = mw;
-    getParameters();
+    get_users_selections();
 }
 
 smearApi::~smearApi()
@@ -28,6 +28,7 @@ QVector<QString> smearApi::getResponse()
 void smearApi::fetch(QString start, QString end, QString aggregation,
                      QString gas_station)
 {
+    // Creating the url
     QString url = "";
     url.append("https://smear-backend.rahtiapp.fi/search/timeseries?"
                    "aggregation=");
@@ -43,91 +44,83 @@ void smearApi::fetch(QString start, QString end, QString aggregation,
     if (QDate::currentDate() == mw_->getSmearEndDate())
     {
         url.append("T");
-
         QTime currentTime = QTime::currentTime();
         QString time = currentTime.toString("hh:mm:ss.zzz");
         url.append(time);
     }
-    else
-    {
-        // If the end date is not today, the time will be the end of the end
-        // date
+    else {
+        // If the end date is not today, the time
+        // will be the end of the end date
         url.append("T23:59:59.000");
     }
-
     url.append("&tablevariable=");
     url.append(gas_station);
 
     manager_->get(QNetworkRequest(QUrl(url)));
 }
 
-void smearApi::getParameters()
+void smearApi::get_users_selections()
 {
     QVector<QString> stations = mw_->getMonitoringStations();
     QVector<QString> gases = mw_->getGreenhouseGases();
 
+    // Checking which stations and gasses user has chosen
     bool varrio = std::find(stations.begin(), stations.end(), VARRIO) !=
                   stations.end();
-    bool hyytiala = std::find(stations.begin(), stations.end(), "hyytiala") !=
+    bool hyytiala = std::find(stations.begin(), stations.end(), HYYTIALA) !=
                     stations.end();
-    bool kumpula = std::find(stations.begin(), stations.end(), "kumpula") !=
+    bool kumpula = std::find(stations.begin(), stations.end(), KUMPULA) !=
                    stations.end();
-    bool co2 = std::find(gases.begin(), gases.end(), "co2") != gases.end();
-    bool so2 = std::find(gases.begin(), gases.end(), "so2") != gases.end();
-    bool nox = std::find(gases.begin(), gases.end(), "nox") != gases.end();
+    bool co2 = std::find(gases.begin(), gases.end(), CO2) != gases.end();
+    bool so2 = std::find(gases.begin(), gases.end(), SO2) != gases.end();
+    bool nox = std::find(gases.begin(), gases.end(), NOX) != gases.end();
+
+    QString start_date = mw_->getSmearStartDate().toString(Qt::ISODate);
+    QString end_date = mw_->getSmearEndDate().toString(Qt::ISODate);
+    QString datatype = mw_->getDatatype();
 
     // Finds the correct information related to certain station and gas
     if (varrio and co2) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "VAR_EDDY.av_c");
-              selections_++; }
+        fetch(start_date, end_date, datatype, VARCO2);
+        selections_++;
+    }
     if (varrio and so2) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "VAR_META.SO2_1");
-              selections_++; }
+        fetch(start_date, end_date, datatype, VARSO2);
+        selections_++;
+    }
     if (varrio and nox) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "VAR_META.NO_1");
-              selections_++; }
+        fetch(start_date, end_date, datatype, VARNOX);
+        selections_++;
+    }
     if (hyytiala and co2) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "HYY_META.CO2icos168");
-              selections_++; }
+        fetch(start_date, end_date, datatype, HYYCO2);
+        selections_++;
+    }
     if (hyytiala and so2) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "HYY_META.SO2168");
-              selections_++; }
+        fetch(start_date, end_date, datatype, HYYSO2);
+        selections_++;
+    }
     if (hyytiala and nox) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "HYY_META.NO168");
-              selections_++; }
+        fetch(start_date, end_date, datatype, HYYNOX);
+        selections_++;
+    }
     if (kumpula and co2) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "KUM_EDDY.av_c_ep");
-              selections_++; }
+        fetch(start_date, end_date, datatype, KUMCO2);
+        selections_++;
+    }
     if (kumpula and so2) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "KUM_META.SO_2");
-              selections_++; }
+        fetch(start_date, end_date, datatype, KUMSO2);
+        selections_++;
+    }
     if (kumpula and nox) {
-        fetch(mw_->getSmearStartDate().toString(Qt::ISODate),
-              mw_->getSmearEndDate().toString(Qt::ISODate),
-              mw_->getDatatype(), "KUM_META.NO");
-              selections_++; }
+        fetch(start_date, end_date, datatype, KUMNOX);
+        selections_++;
+    }
 }
 
 void smearApi::downloadCompleted(QNetworkReply *networkReply)
 {
     response_.push_back(networkReply->readAll());
-    //qDebug() << response_;
     networkReply->deleteLater();
 
     if(response_.size() == selections_) {
