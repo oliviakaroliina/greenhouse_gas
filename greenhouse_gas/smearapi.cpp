@@ -21,7 +21,6 @@ smearApi::~smearApi()
 
 QVector<QString> smearApi::getResponse()
 {
-    qDebug() << "response";
     return response_;
 }
 
