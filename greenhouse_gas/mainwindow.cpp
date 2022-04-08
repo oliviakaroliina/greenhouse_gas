@@ -92,19 +92,19 @@ QString MainWindow::getDatatype()
 {
     if (ui->rawRadioButton->isChecked())
     {
-        return "NONE";
+        return RAW;
     }
     else if (ui->averageRadioButton->isChecked())
     {
-        return "ARITHMETIC";
+        return AVERAGE;
     }
     else if (ui->minimumRadioButton->isChecked())
     {
-        return "MIN";
+        return MINIMUM;
     }
     else if (ui->maximumRadioButton->isChecked())
     {
-        return "MAX";
+        return MAXIMUM;
     }
     else
     {
@@ -358,7 +358,7 @@ void MainWindow::saveSelections()
         fileObject << gas.toStdString() << ":";
     }
     fileObject << std::endl << "datatype:" << datatype.toStdString() <<
-                   std::endl << "datasets:";
+                  std::endl << "datasets:";
     for (QString& dataset : datasets)
     {
         fileObject << dataset.toStdString() << ":";

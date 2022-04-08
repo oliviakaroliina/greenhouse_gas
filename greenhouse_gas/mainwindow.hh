@@ -33,8 +33,8 @@ public:
     // If no greenhouse gas is selected, returns empty vector
     QVector<QString> getGreenhouseGases();
 
-    // Returns datatype in lower case
-    // e.g. "minimum"
+    // Returns datatype
+    // e.g. "MIN"
     // If no datatype is selected, returns empty string
     QString getDatatype();
 
@@ -89,10 +89,10 @@ private:
     const QString CO2 = "co2";
     const QString SO2 = "so2";
     const QString NOX = "nox";
-    const QString RAW = "raw";
-    const QString AVERAGE = "average";
-    const QString MINIMUM = "minimum";
-    const QString MAXIMUM = "maximum";
+    const QString RAW = "NONE";
+    const QString AVERAGE = "ARITHMETIC";
+    const QString MINIMUM = "MIN";
+    const QString MAXIMUM = "MAX";
     const QString IN_TONNES = "in tonnes";
     const QString INTENSITY = "intensity";
     const QString INDEXED = "indexed";
