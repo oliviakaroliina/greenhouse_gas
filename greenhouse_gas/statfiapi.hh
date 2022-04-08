@@ -40,7 +40,7 @@ private:
     const QString API_IN_TONNES = "Khk_yht";
     const QString API_INTENSITY = "Khk_yht_las";
     const QString API_INDEXED = "Khk_yht_index";
-    const QString API_INTENSITY_INDEXED = "iKhk_yht_las_index";
+    const QString API_INTENSITY_INDEXED = "Khk_yht_las_index";
 };
 
 #endif // STATFIAPI_HH
