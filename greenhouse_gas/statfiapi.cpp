@@ -58,14 +58,15 @@ void statfiApi::fetch(QString start, QString end, QString coType)
     int startInt = start.toInt();
     int endInt = end.toInt();
 
-    if (endInt - startInt < 2) {
+    if (endInt - startInt < 1) {
+        yearValuesArray.push_back(start);
+    }
+
+    else if (endInt - startInt < 2) {
         yearValuesArray.push_back(start);
         yearValuesArray.push_back(end);
     }
 
-    else if (endInt - startInt < 1) {
-        yearValuesArray.push_back(start);
-    }
     else {
         int years = endInt - startInt;
         int n = 0;
@@ -73,9 +74,10 @@ void statfiApi::fetch(QString start, QString end, QString coType)
         while (n < years) {
             addYear = startInt + n;
             yearValuesArray.push_back(addYear);
+            n++;
         }
     }
-    //yearValuesArray.push_back("2008");
+
     yearSelectionObject.insert("values", yearValuesArray);
 
     yearObject.insert("selection", yearSelectionObject);
@@ -100,8 +102,6 @@ void statfiApi::getUsersSelections()
     QString startDate = QString::number(mw_->getStatfiStartYear());
     QString endDate = QString::number(mw_->getStatfiEndYear());
 
-    startDate = "2008";
-    endDate = "2009";
     // CO2 emissions in 1000kgs
     if (in_tonnes) {
         fetch(startDate, endDate, API_IN_TONNES);
@@ -125,7 +125,6 @@ void statfiApi::getUsersSelections()
         fetch(startDate, endDate, API_INDEXED);
         selections_++;
     }
-
 }
 
 void statfiApi::downloadCompleted(QNetworkReply *networkReply)
