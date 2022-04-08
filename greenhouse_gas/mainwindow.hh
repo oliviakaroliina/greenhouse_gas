@@ -49,11 +49,11 @@ public:
     // Returns Smear end date
     QDate getSmearEndDate();
 
-    // Returns Statfi start date
-    QDate getStatfiStartDate();
+    // Returns Statfi start year
+    int getStatfiStartYear();
 
-    // Returns Statfi end date
-    QDate getStatfiEndDate();
+    // Returns Statfi end year
+    int getStatfiEndYear();
 
 signals:
     void visualizeButtonPressed();
@@ -143,14 +143,18 @@ private:
     // Parameters:
     // - smearstart: if information to be added to UI is smear's start date
     // - smearend: if information to be added to UI is smear's end date
-    // - statfistart: if information to be added to UI is statfi's start date
-    // - statfiend: if information to be added to UI is statfi's end date
     // - day: the day of the date to be added to the UI
     // - month: the month of the date to be added to the UI
     // - year: the year of the date to be added to the UI
     // Sets date information to the UI based on the user's previous selection
-    void setDate(bool smearstart, bool smearend, bool statfistart,
-                 bool statfiend, int day, int month, int year);
+    void setDate(bool smearstart, bool smearend, int day, int month, int year);
+
+    // Parameters:
+    // - statfistart: if information to be added to UI is statfi's start year
+    // - statfiend: if information to be added to UI is statfi's end year
+    // - year: the year to be added to the UI
+    // Sets year information to the UI based on the user's previous selection
+    void setYear(bool statfistart, bool statfiend, int year);
 
 };
 #endif // MAINWINDOW_HH

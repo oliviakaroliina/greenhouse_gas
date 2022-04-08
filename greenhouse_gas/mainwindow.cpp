@@ -140,14 +140,14 @@ QDate MainWindow::getSmearEndDate()
     return ui->smearEndCalendar->selectedDate();
 }
 
-QDate MainWindow::getStatfiStartDate()
+int MainWindow::getStatfiStartYear()
 {
-    return ui->statfiStartCalendar->selectedDate();
+    return ui->statfiStartYear->value();
 }
 
-QDate MainWindow::getStatfiEndDate()
+int MainWindow::getStatfiEndYear()
 {
-    return ui->statfiEndCalendar->selectedDate();
+    return ui->statfiEndYear->value();
 }
 
 void MainWindow::disableButtons()
@@ -228,8 +228,8 @@ void MainWindow::disableStatfiButtons()
     ui->intensityIndexedCheckBox->setEnabled(false);
     ui->statfiStartLabel->setEnabled(false);
     ui->statfiEndLabel->setEnabled(false);
-    ui->statfiStartCalendar->setEnabled(false);
-    ui->statfiEndCalendar->setEnabled(false);
+    ui->statfiStartYear->setEnabled(false);
+    ui->statfiEndYear->setEnabled(false);
 
     // Removes possible selections
     ui->inTonnesCheckBox->setCheckState(Qt::Unchecked);
@@ -311,8 +311,8 @@ void MainWindow::enableAllButtons()
     ui->intensityIndexedCheckBox->setEnabled(true);
     ui->statfiStartLabel->setEnabled(true);
     ui->statfiEndLabel->setEnabled(true);
-    ui->statfiStartCalendar->setEnabled(true);
-    ui->statfiEndCalendar->setEnabled(true);
+    ui->statfiStartYear->setEnabled(true);
+    ui->statfiEndYear->setEnabled(true);
 }
 
 void MainWindow::saveSelections()
@@ -325,8 +325,8 @@ void MainWindow::saveSelections()
     QVector<QString> datasets = getDatasets();
     QDate smearstart = getSmearStartDate();
     QDate smearend = getSmearEndDate();
-    QDate statfistart = getStatfiStartDate();
-    QDate statfiend = getStatfiEndDate();
+    int statfistart = getStatfiStartYear();
+    int statfiend = getStatfiEndYear();
 
     // Opens the file for writing
     std::ofstream fileObject(SELECTIONS_FILE);
@@ -363,10 +363,8 @@ void MainWindow::saveSelections()
                    smearstart.year() << ":" << std::endl << "smearend:";
     fileObject << smearend.day() << ":" << smearend.month() << ":" <<
                    smearend.year() << ":" << std::endl << "statfistart:";
-    fileObject << statfistart.day() << ":" << statfistart.month() << ":" <<
-                   statfistart.year() << ":" << std::endl << "statfiend:";
-    fileObject << statfiend.day() << ":" << statfiend.month() << ":" <<
-                   statfiend.year() << ":" << std::endl;
+    fileObject << statfistart << ":" <<  std::endl << "statfiend:";
+    fileObject << statfiend << ":" << std::endl;
 
     // Closes the file
     fileObject.close();
@@ -420,23 +418,21 @@ void MainWindow::readSelections()
                 // Indexing starts from 1, because the first word in
                 // the row is metadata (explains the data type), so
                 // the actual information starts from the second word
-                setDate(1, 0, 0, 0, std::stoi(parts.at(1)),
-                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                setDate(1, 0, std::stoi(parts.at(1)), std::stoi(parts.at(2)),
+                        std::stoi(parts.at(3)));
             }
             else if (parts.at(0) == "smearend")
             {
-                setDate(0, 1, 0, 0, std::stoi(parts.at(1)),
-                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                setDate(0, 1, std::stoi(parts.at(1)), std::stoi(parts.at(2)),
+                        std::stoi(parts.at(3)));
             }
             else if (parts.at(0) == "statfistart")
             {
-                setDate(0, 0, 1, 0, std::stoi(parts.at(1)),
-                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                setYear(1, 0, std::stoi(parts.at(1)));
             }
             else if (parts.at(0) == "statfiend")
             {
-                setDate(0, 0, 0, 1, std::stoi(parts.at(1)),
-                        std::stoi(parts.at(2)), std::stoi(parts.at(3)));
+                setYear(0, 1, std::stoi(parts.at(1)));
             }
             ++rowNumber;
         }
@@ -574,8 +570,8 @@ void MainWindow::setDatatype(std::string &datatype)
     }
 }
 
-void MainWindow::setDate(bool smearstart, bool smearend, bool statfistart,
-                         bool statfiend, int day, int month, int year)
+void MainWindow::setDate(bool smearstart, bool smearend, int day,
+                         int month, int year)
 {
     if (smearstart)
     {
@@ -585,12 +581,16 @@ void MainWindow::setDate(bool smearstart, bool smearend, bool statfistart,
     {
         ui->smearEndCalendar->setSelectedDate({year, month, day});
     }
-    else if (statfistart)
+}
+
+void MainWindow::setYear(bool statfistart, bool statfiend, int year)
+{
+    if (statfistart)
     {
-        ui->statfiStartCalendar->setSelectedDate({year, month, day});
+        ui->statfiStartYear->setValue(year);
     }
     else if (statfiend)
     {
-        ui->statfiEndCalendar->setSelectedDate({year, month, day});
+        ui->statfiEndYear->setValue(year);
     }
 }

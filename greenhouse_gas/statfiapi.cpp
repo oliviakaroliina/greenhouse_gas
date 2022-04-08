@@ -97,8 +97,8 @@ void statfiApi::getUsersSelections()
     bool intensity_indexed = std::find(coTypes.begin(), coTypes.end(), INTENSITY_INDEXED) != coTypes.end();
     bool indexed = std::find(coTypes.begin(), coTypes.end(), INDEXED) != coTypes.end();
 
-    QString startDate = mw_->getStatfiStartDate().toString();
-    QString endDate = mw_->getStatfiEndDate().toString();
+    QString startDate = QString::number(mw_->getStatfiStartYear());
+    QString endDate = QString::number(mw_->getStatfiEndYear());
 
     startDate = "2008";
     endDate = "2009";
