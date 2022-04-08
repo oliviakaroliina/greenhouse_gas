@@ -11,6 +11,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Front page");
 
+    ui->statfiStartYear->setRange(STATFI_MEASUREMENT_START_YEAR,
+                                  STATFI_MEASUREMENT_END_YEAR);
+    ui->statfiEndYear->setRange(STATFI_MEASUREMENT_START_YEAR,
+                                STATFI_MEASUREMENT_END_YEAR);
+
     connect(ui->smearCheckBox, &QRadioButton::clicked, this,
             &MainWindow::disableButtons);
     connect(ui->statfiCheckBox, &QRadioButton::clicked, this,

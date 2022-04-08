@@ -77,6 +77,9 @@ private:
     Ui::MainWindow *ui;
 
     const std::string SELECTIONS_FILE = "selections.txt";
+    const int STATFI_MEASUREMENT_START_YEAR = 1990;
+    const int STATFI_MEASUREMENT_END_YEAR = 2016;
+
     const QString NO_VALUE = "";
     const QString SMEAR = "smear";
     const QString STATFI = "statfi";
