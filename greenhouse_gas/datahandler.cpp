@@ -5,7 +5,10 @@ dataHandler::dataHandler(smearApi *smear, statfiApi *statfi)
     smear_ = smear;
     statfi_ = statfi;
 
-    handleSmearData();
+    if (smear != nullptr)
+    {
+        handleSmearData();
+    }
 }
 
 void dataHandler::handleSmearData()

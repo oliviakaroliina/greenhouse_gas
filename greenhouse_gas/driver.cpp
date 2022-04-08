@@ -85,10 +85,9 @@ void driver::createDataHandler()
             datahandler = new dataHandler(smear, statfi);
             connect(datahandler,&dataHandler::dataHandled,this,
                     &driver::createPlotWindow);
-            datahandler->handleSmearData();
+            //datahandler->handleStatfiData();
         }
     }
-
 }
 
 void driver::createPlotWindow()
