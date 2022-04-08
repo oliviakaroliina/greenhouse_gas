@@ -19,7 +19,7 @@ public:
 
     QVector<Station*> getStations();
     void testStationNames();
-    bool allHandled();
+    void handleSmearData();
 
 public slots:
     void areAllDataHandled();
@@ -33,7 +33,6 @@ private:
     QVector<Station*> stationData = {};
     QVector<QString> stationNames = {};
 
-    void handleSmearData();
     void handleStatfiData();
     void getInfo(QString& station, QString& gas, QString& variable);
 
