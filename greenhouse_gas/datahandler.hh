@@ -1,11 +1,11 @@
 #ifndef DATAHANDLER_HH
 #define DATAHANDLER_HH
 
-#include "QObject"
 #include "smearapi.hh"
 #include "statfiapi.hh"
 #include "station.hh"
 
+#include <QObject>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -17,6 +17,13 @@ class dataHandler : public QObject
 public:
     dataHandler(smearApi* smear = nullptr, statfiApi* statfi = nullptr);
 
+    QVector<Station*> getStations();
+    void testStationNames();
+    bool allHandled();
+
+public slots:
+    void areAllDataHandled();
+
 signals:
     void dataHandled();
 
@@ -24,12 +31,11 @@ private:
     smearApi* smear_ = nullptr;
     statfiApi* statfi_ = nullptr;
     QVector<Station*> stationData = {};
+    QVector<QString> stationNames = {};
 
     void handleSmearData();
     void handleStatfiData();
-    void areAllDataHandled();
     void getInfo(QString& station, QString& gas, QString& variable);
-    QVector<Station*> getStations();
 
     bool smearDataHandled = false;
     bool statfiDataHandled = false;

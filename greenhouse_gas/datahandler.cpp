@@ -10,7 +10,6 @@ dataHandler::dataHandler(smearApi *smear, statfiApi *statfi)
 
 void dataHandler::handleSmearData()
 {
-    qDebug() << "handle smear data";
     QVector<QString> response = smear_->getResponse();
 
     for(int i = 0; i < response.size(); i++) {
@@ -23,40 +22,38 @@ void dataHandler::handleSmearData()
         QString stationName = "";
         QString gas = "";
         getInfo(stationName, gas, variable);
-        //QString dateString = "";
-        //double value = 0;
-        qDebug() << stationName;
 
         for(int k = 0; k < data.size(); k++) {
             QJsonObject values = data[k].toObject();
-            QJsonValue date = values.value(QString("samptime"));
-            //dateString = date.toString();
-            QJsonValue subval2 = values.value(QString(variable));
-            //value = subval2.toDouble();
+            QJsonValue date = values.value(QString("samptime")); // kellonaika
+            QJsonValue subval2 = values.value(QString(variable)); // datan arvo
             if(stationData.size() == 0) {
-                Station* station = new Station(stationName, gas);
-                //qDebug() << station->getName();
+                Station* station = new Station(stationName);
                 stationData.push_back(station);
-                station->insertValues(date.toString(), subval2.toDouble(), gas);
+                stationNames.push_back(stationName);
+                station->insertValues(subval2.toDouble(), gas);
             } else {
-                for(int j = 0; j < stationData.size(); j++) {
-                    //qDebug() << j;
-                    if(stationData.at(j)->getName() == stationName) {
-                        //qDebug() << stationData.at(j)->getName();
-                        stationData.at(j)->insertValues(date.toString(), subval2.toDouble(), gas);
-                    } else {
-                        Station* station = new Station(stationName, gas);
-                        //qDebug() << station->getName();
-                        stationData.push_back(station);
-                        station->insertValues(date.toString(), subval2.toDouble(), gas);
+                QVector<QString>::iterator it = std::find(stationNames.begin(), stationNames.end(), stationName);
+                if(it != stationNames.end()) { // löytyy
+                    for(int j = 0; j < stationData.size(); j++) {
+                        if(stationData.at(j)->getName() == stationName) {
+                            stationData.at(j)->insertValues(subval2.toDouble(), gas);
+                            break;
+                        }
                     }
+                } else { // ei löydy
+                    Station* station = new Station(stationName);
+                    stationData.push_back(station);
+                    stationNames.push_back(stationName);
+                    station->insertValues(subval2.toDouble(), gas);
                 }
             }
         }
     }
+
     smearDataHandled = true;
-    //statfiDataHandled = true;
-    //areAllDataHandled();
+    statfiDataHandled = true;
+    areAllDataHandled();
 }
 
 void dataHandler::handleStatfiData()
@@ -68,9 +65,7 @@ void dataHandler::handleStatfiData()
 void dataHandler::areAllDataHandled()
 {
     if(smearDataHandled and statfiDataHandled) {
-        qDebug() << "moikku";
         emit dataHandled();
-        qDebug() << "vaikku";
     }
 }
 
@@ -109,4 +104,13 @@ void dataHandler::getInfo(QString &station, QString &gas, QString &variable)
 QVector<Station*> dataHandler::getStations()
 {
     return stationData;
+}
+
+bool dataHandler::allHandled()
+{
+    if(smearDataHandled and statfiDataHandled) {
+        return true;
+    } else {
+        return false;
+    }
 }

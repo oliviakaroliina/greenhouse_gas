@@ -50,8 +50,11 @@ void driver::createApis()
 void driver::createDataHandler()
 {
     datahandler = new dataHandler(smear, statfi);
-    // Signals that data is handled so plotwindow can be made for the user
     connect(datahandler,&dataHandler::dataHandled,this,&driver::createPlotWindow);
+    //datahandler->testStationNames();
+    if(datahandler->allHandled()) {
+        createPlotWindow();
+    }
 }
 
 void driver::createPlotWindow()

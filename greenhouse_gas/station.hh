@@ -10,8 +10,7 @@ public:
     Station(QString name = "", QString gasType = "");
 
     QString getName();
-    QString getGasType();
-    void insertValues(QString time, double value, QString gasType);
+    void insertValues(double value, QString gasType);
     QVector<QVector<double>> getAllData();
     void testi();
 
@@ -19,7 +18,7 @@ public:
 
 private:
     QString name_ = "";
-    QString gasType_ = "";
+    QVector<QString> gasTypes_ = {};
 
     // nää alapuolelta vektoreihin
     QString time_ = "";

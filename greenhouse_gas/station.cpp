@@ -2,9 +2,8 @@
 
 Station::Station(QString name, QString gasType)
 {
-    qDebug() << "Station";
     name_ = name;
-    gasType_ = gasType;
+    gasTypes_.push_back(gasType);
 }
 
 QString Station::getName()
@@ -12,26 +11,32 @@ QString Station::getName()
     return name_;
 }
 
-QString Station::getGasType()
-{
-    return gasType_;
-}
 
-void Station::insertValues(QString time, double value, QString gasType)
+void Station::insertValues(double value, QString gasType)
 {
-    time.remove(10, 1);
-    QDateTime date = QDateTime::fromString(time,"yyyy-MM-ddhh:mm:ss.zzz");
-    //qDebug() << date;
-    double timeAxis = date.currentSecsSinceEpoch();
-
     if(gasType == CO2) {
-        CO2x_.push_back(timeAxis);
+        if(CO2x_.size() == 0) {
+            CO2x_.push_back(1);
+        } else {
+            double previous = CO2x_.last();
+            CO2x_.push_back(previous + 1);
+        }
         CO2y_.push_back(value);
     } else if(gasType == SO2) {
-        SO2x_.push_back(timeAxis);
+        if(SO2x_.size() == 0) {
+            SO2x_.push_back(1);
+        } else {
+            double previous = SO2x_.last();
+            SO2x_.push_back(previous + 1);
+        }
         SO2y_.push_back(value);
     } else {
-        NOx_.push_back(timeAxis);
+        if(NOx_.size() == 0) {
+            NOx_.push_back(1);
+        } else {
+            double previous = NOx_.last();
+            NOx_.push_back(previous + 1);
+        }
         NOy_.push_back(value);
     }
 }
@@ -49,11 +54,6 @@ QVector<QVector<double>> Station::getAllData()
     return allData;
 }
 
-void Station::testi()
-{
-    qDebug() << CO2x_.at(0);
-    qDebug() << CO2y_.at(0);
-}
 
 Station::~Station()
 {
