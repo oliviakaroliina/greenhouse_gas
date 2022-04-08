@@ -106,11 +106,3 @@ QVector<Station*> dataHandler::getStations()
     return stationData;
 }
 
-bool dataHandler::allHandled()
-{
-    if(smearDataHandled and statfiDataHandled) {
-        return true;
-    } else {
-        return false;
-    }
-}
