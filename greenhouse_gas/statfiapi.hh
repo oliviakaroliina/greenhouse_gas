@@ -18,7 +18,7 @@ public:
     QVector<QString> getResponse();
 
 signals:
-    void dataCollected();
+    void statfiDataCollected();
 
 private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);

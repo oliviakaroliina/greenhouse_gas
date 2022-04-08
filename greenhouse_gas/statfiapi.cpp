@@ -136,7 +136,7 @@ void statfiApi::downloadCompleted(QNetworkReply *networkReply)
     networkReply->deleteLater();
 
     if (response_.size() == selections_) {
-        emit dataCollected();
+        emit statfiDataCollected();
     }
 
 }

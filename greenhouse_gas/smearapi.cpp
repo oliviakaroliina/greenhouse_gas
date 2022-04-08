@@ -123,6 +123,6 @@ void smearApi::downloadCompleted(QNetworkReply *networkReply)
     networkReply->deleteLater();
 
     if(response_.size() == selections_) {
-        emit dataCollected();
+        emit smearDataCollected();
     }
 }

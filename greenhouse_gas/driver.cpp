@@ -37,14 +37,29 @@ void driver::createApis()
 {
     // Calls the correct api class
     QVector<QString> apis = mw->getApis();
+
     if (std::find(apis.begin(), apis.end(), "smear") != apis.end()) {
         smear = new smearApi(nullptr, mw);
+        connect(smear,&smearApi::smearDataCollected,this,
+                &driver::setSmearDataReady);
     }
     if (std::find(apis.begin(), apis.end(), "statfi") != apis.end()) {
         statfi = new statfiApi(nullptr, mw);
+        connect(statfi,&statfiApi::statfiDataCollected,this,
+                &driver::setStatfiDataReady);
     }
-    // Signals that data has been colloected so datahandler can be created
-    connect(smear,&smearApi::dataCollected,this,&driver::createDataHandler);
+}
+
+void driver::setSmearDataReady()
+{
+    smearDataReady = true;
+    createDataHandler();
+}
+
+void driver::setStatfiDataReady()
+{
+    statfiDataReady = true;
+    createDataHandler();
 }
 
 void driver::createDataHandler()

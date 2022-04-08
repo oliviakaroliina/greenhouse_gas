@@ -19,7 +19,7 @@ public:
     QVector<QString> getResponse();
 
 signals:
-    void dataCollected();
+    void smearDataCollected();
 
 private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);

@@ -21,6 +21,12 @@ private slots:
     // signals to them
     void createApis();
 
+    // Saves the information that Smear data has been collected
+    void setSmearDataReady();
+
+    // Saves the information that Statfi data has been collected
+    void setStatfiDataReady();
+
     // Creates datahandler-class and
     // sends signals to them
     void createDataHandler();
@@ -50,6 +56,9 @@ private:
 
     // Plotwindow class
     PlotWindow* plotwindow = nullptr;
+
+    bool smearDataReady = false;
+    bool statfiDataReady = false;
 };
 
 #endif // DRIVER_HH
