@@ -86,7 +86,6 @@ void statfiApi::fetch(QString start, QString end, QString coType)
 
     QJsonDocument doc(outerObject);
     QByteArray data = doc.toJson();
-    qDebug() << outerObject;
     manager_->post(request, data);
 }
 
@@ -130,8 +129,6 @@ void statfiApi::getUsersSelections()
 void statfiApi::downloadCompleted(QNetworkReply *networkReply)
 {
     response_.push_back(networkReply->readAll());
-    qDebug() << "response";
-    qDebug() << response_;
     networkReply->deleteLater();
 
     if (response_.size() == selections_) {
