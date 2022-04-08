@@ -15,6 +15,7 @@ public:
     explicit statfiApi(QObject* parent = nullptr, MainWindow* mw = nullptr);
     ~statfiApi();
 
+    // Returns a response from post-request to api
     QVector<QString> getResponse();
 
 signals:
@@ -24,15 +25,29 @@ private Q_SLOTS:
     void downloadCompleted(QNetworkReply* networkReply);
 
 private:
+    // Manages the post-request from api
     QNetworkAccessManager* manager_;
+
+    // Saves the user's choises in mainwindow UI
     MainWindow* mw_ = nullptr;
+
+    // Saves the response to QVector
     QVector<QString> response_ = {};
 
+    /* Parameters:
+     * start: user's choise for the start year
+     * end: user's choise for the end year
+     * coType: user's choise(s) for the CO2-type(s)
+     * */
     void fetch(QString start, QString end, QString coType);
+
+    // Fetches the user's selections from mainWindow
     void getUsersSelections();
 
+    // Saves the amount of selections made
     int selections_ = 0;
 
+    // Variables for co types
     const QString IN_TONNES = "in tonnes";
     const QString INTENSITY = "intensity";
     const QString INDEXED = "indexed";
