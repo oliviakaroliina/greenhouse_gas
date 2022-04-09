@@ -71,9 +71,30 @@ void driver::setStatfiDataReady()
 
 void driver::createDataHandler()
 {
-    datahandler = new dataHandler(smear, statfi);
-    connect(datahandler,&dataHandler::dataHandled,this,&driver::createPlotWindow);
-    datahandler->handleSmearData();
+    QVector<QString> apis = mw->getApis();
+
+    // Both apis have been selected
+    if (apis.size() == 2)
+    {
+        if (smearDataReady and statfiDataReady)
+        {
+            datahandler = new dataHandler(smear, statfi);
+            connect(datahandler,&dataHandler::dataHandled,this,
+                    &driver::createPlotWindow);
+            datahandler->handleSmearData();
+        }
+    }
+    // Only one api have been selected
+    else if (apis.size() == 1)
+    {
+        if (smearDataReady or statfiDataReady)
+        {
+            datahandler = new dataHandler(smear, statfi);
+            connect(datahandler,&dataHandler::dataHandled,this,
+                    &driver::createPlotWindow);
+            //datahandler->handleStatfiData();
+        }
+    }
 }
 
 void driver::createPlotWindow()
@@ -81,3 +102,5 @@ void driver::createPlotWindow()
     plotwindow = new PlotWindow(nullptr);
     plotwindow->show();
 }
+
+
