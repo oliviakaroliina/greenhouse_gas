@@ -10,8 +10,6 @@ driver::driver(int argc, char *argv[])
     // Signals that user has made his choices so the api calls can begin
     connect(mw,&MainWindow::visualizeButtonPressed,this,&driver::createApis);
 
-    errorhandler = new errorHandler();
-
     mw->show();
     a.exec();
 }
@@ -35,18 +33,23 @@ driver::~driver()
 
 void driver::createApis()
 {
-    // Calls the correct api class
-    QVector<QString> apis = mw->getApis();
+    errorhandler = new errorHandler(mw);
+    qDebug() << errorhandler->checkErrors();
 
-    if (std::find(apis.begin(), apis.end(), "smear") != apis.end()) {
-        smear = new smearApi(nullptr, mw);
-        connect(smear,&smearApi::smearDataCollected,this,
-                &driver::setSmearDataReady);
-    }
-    if (std::find(apis.begin(), apis.end(), "statfi") != apis.end()) {
-        statfi = new statfiApi(nullptr, mw);
-        connect(statfi,&statfiApi::statfiDataCollected,this,
-                &driver::setStatfiDataReady);
+    if (errorhandler->checkErrors() == "No errors") {
+        // Calls the correct api class
+        QVector<QString> apis = mw->getApis();
+
+        if (std::find(apis.begin(), apis.end(), "smear") != apis.end()) {
+            smear = new smearApi(nullptr, mw);
+            connect(smear,&smearApi::smearDataCollected,this,
+                    &driver::setSmearDataReady);
+        }
+        if (std::find(apis.begin(), apis.end(), "statfi") != apis.end()) {
+            statfi = new statfiApi(nullptr, mw);
+            connect(statfi,&statfiApi::statfiDataCollected,this,
+                    &driver::setStatfiDataReady);
+        }
     }
 }
 

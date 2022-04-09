@@ -1,11 +1,16 @@
 #ifndef ERRORHANDLER_HH
 #define ERRORHANDLER_HH
 
+#include "mainwindow.hh"
 
-class errorHandler
+class errorHandler : public QObject
 {
+    Q_OBJECT
 public:
-    errorHandler();
+    explicit errorHandler(MainWindow* mw = nullptr);
+    QString checkErrors();
+private:
+    MainWindow* mw_ = nullptr;
 };
 
 #endif // ERRORHANDLER_HH
