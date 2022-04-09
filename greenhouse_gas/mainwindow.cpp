@@ -599,3 +599,8 @@ void MainWindow::setYear(bool statfistart, bool statfiend, int year)
         ui->statfiEndYear->setValue(year);
     }
 }
+
+void MainWindow::createErrorMessage(QString msg)
+{
+    ui->errorLabel->setText(msg);
+}

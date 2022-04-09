@@ -55,6 +55,8 @@ public:
     // Returns Statfi end year
     int getStatfiEndYear();
 
+    void createErrorMessage(QString msg);
+
 signals:
     void visualizeButtonPressed();
 

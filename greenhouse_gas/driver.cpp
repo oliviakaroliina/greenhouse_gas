@@ -34,9 +34,13 @@ driver::~driver()
 void driver::createApis()
 {
     errorhandler = new errorHandler(mw);
-    qDebug() << errorhandler->checkErrors();
+    QString errormsg = errorhandler->checkErrors();
 
-    if (errorhandler->checkErrors() == "No errors") {
+    if (errormsg != "No errors") {
+        mw->createErrorMessage(errormsg);
+    }
+    else {
+        mw->createErrorMessage("");
         // Calls the correct api class
         QVector<QString> apis = mw->getApis();
 
@@ -67,30 +71,9 @@ void driver::setStatfiDataReady()
 
 void driver::createDataHandler()
 {
-    QVector<QString> apis = mw->getApis();
-
-    // Both apis have been selected
-    if (apis.size() == 2)
-    {
-        if (smearDataReady and statfiDataReady)
-        {
-            datahandler = new dataHandler(smear, statfi);
-            connect(datahandler,&dataHandler::dataHandled,this,
-                    &driver::createPlotWindow);
-            datahandler->handleSmearData();
-        }
-    }
-    // Only one api have been selected
-    else if (apis.size() == 1)
-    {
-        if (smearDataReady or statfiDataReady)
-        {
-            datahandler = new dataHandler(smear, statfi);
-            connect(datahandler,&dataHandler::dataHandled,this,
-                    &driver::createPlotWindow);
-            //datahandler->handleStatfiData();
-        }
-    }
+    datahandler = new dataHandler(smear, statfi);
+    connect(datahandler,&dataHandler::dataHandled,this,&driver::createPlotWindow);
+    datahandler->handleSmearData();
 }
 
 void driver::createPlotWindow()
