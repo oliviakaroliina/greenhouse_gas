@@ -25,18 +25,19 @@ QVector<QString> statfiApi::getResponse()
 
 void statfiApi::fetch(QString start, QString end, QString coType)
 {
+    // creating the url
     QString url = "https://pxnet2.stat.fi:443/PXWeb/api/v1/en/ymp/taulukot/"
                   "Kokodata.px";
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
+    // creating the Json
     QJsonObject outerObject;
     QJsonArray queryArray;
 
     QJsonObject gasObject;
     gasObject.insert("code", "Tiedot");
-
     QJsonObject gasSelectionObject;
     gasSelectionObject.insert("filter", "item");
 
@@ -45,33 +46,35 @@ void statfiApi::fetch(QString start, QString end, QString coType)
     gasSelectionObject.insert("values", datasetValuesArray);
 
     gasObject.insert("selection", gasSelectionObject);
-
     queryArray.push_back(gasObject);
 
     QJsonObject yearObject;
     yearObject.insert("code", "Vuosi");
-
     QJsonObject yearSelectionObject;
     yearSelectionObject.insert("filter", "item");
 
     QJsonArray yearValuesArray;
+
     int startInt = start.toInt();
     int endInt = end.toInt();
 
-    if (endInt - startInt < 1) {
+    // checking the years
+    if (endInt - startInt < 1)
+    {
         yearValuesArray.push_back(start);
     }
-
-    else if (endInt - startInt < 2) {
+    else if (endInt - startInt < 2)
+    {
         yearValuesArray.push_back(start);
         yearValuesArray.push_back(end);
     }
-
-    else {
+    else
+    {
         int years = endInt - startInt;
         int n = 0;
         int addYear = 0;
-        while (n < years) {
+        while (n < years)
+        {
             addYear = startInt + n;
             yearValuesArray.push_back(addYear);
             n++;
@@ -79,7 +82,6 @@ void statfiApi::fetch(QString start, QString end, QString coType)
     }
 
     yearSelectionObject.insert("values", yearValuesArray);
-
     yearObject.insert("selection", yearSelectionObject);
     queryArray.push_back(yearObject);
     outerObject.insert("query", queryArray);
@@ -93,34 +95,40 @@ void statfiApi::getUsersSelections()
 {
     QVector<QString> coTypes = mw_->getDatasets();
 
+    // fetching the user's choises
     bool in_tonnes = std::find(coTypes.begin(), coTypes.end(), IN_TONNES) != coTypes.end();
     bool intensity = std::find(coTypes.begin(), coTypes.end(), INTENSITY) != coTypes.end();
     bool intensity_indexed = std::find(coTypes.begin(), coTypes.end(), INTENSITY_INDEXED) != coTypes.end();
     bool indexed = std::find(coTypes.begin(), coTypes.end(), INDEXED) != coTypes.end();
 
+    // Fetching the years
     QString startDate = QString::number(mw_->getStatfiStartYear());
     QString endDate = QString::number(mw_->getStatfiEndYear());
 
     // CO2 emissions in 1000kgs
-    if (in_tonnes) {
+    if (in_tonnes)
+    {
         fetch(startDate, endDate, API_IN_TONNES);
         selections_++;
     }
 
     // CO2 emissions indexed
-    if (intensity) {
+    if (intensity)
+    {
         fetch(startDate, endDate, API_INTENSITY);
         selections_++;
     }
 
     // CO2 emissions intensity, indexed
-    if (intensity_indexed) {
+    if (intensity_indexed)
+    {
         fetch(startDate, endDate, API_INTENSITY_INDEXED);
         selections_++;
     }
 
     // CO2 emissions indexed
-    if (indexed) {
+    if (indexed)
+    {
         fetch(startDate, endDate, API_INDEXED);
         selections_++;
     }
@@ -131,7 +139,8 @@ void statfiApi::downloadCompleted(QNetworkReply *networkReply)
     response_.push_back(networkReply->readAll());
     networkReply->deleteLater();
 
-    if (response_.size() == selections_) {
+    if (response_.size() == selections_)
+    {
         emit statfiDataCollected();
     }
 
