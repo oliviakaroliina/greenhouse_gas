@@ -18,6 +18,10 @@ public:
     // Returns a response from get-request to api
     QVector<QString> getResponse();
 
+    // Returns the start and end-date
+    QString getStartDate();
+    QString getEndDate();
+
 signals:
     void smearDataCollected();
 

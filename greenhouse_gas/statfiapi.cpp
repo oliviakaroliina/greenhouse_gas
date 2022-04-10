@@ -73,7 +73,7 @@ void statfiApi::fetch(QString start, QString end, QString coType)
         int years = endInt - startInt;
         int n = 0;
         int addYear = 0;
-        while (n < years)
+        while (n <= years)
         {
             addYear = startInt + n;
             yearValuesArray.push_back(addYear);

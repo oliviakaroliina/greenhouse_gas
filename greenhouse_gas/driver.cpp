@@ -82,6 +82,7 @@ void driver::createDataHandler()
             connect(datahandler,&dataHandler::dataHandled,this,
                     &driver::createPlotWindow);
             datahandler->handleSmearData();
+            datahandler->handleStatfiData();
         }
     }
     // Only one api have been selected
@@ -92,7 +93,11 @@ void driver::createDataHandler()
             datahandler = new dataHandler(smear, statfi);
             connect(datahandler,&dataHandler::dataHandled,this,
                     &driver::createPlotWindow);
-            //datahandler->handleStatfiData();
+            if(smearDataReady) {
+                datahandler->handleSmearData();
+            } else {
+                datahandler->handleStatfiData();
+            }
         }
     }
 }

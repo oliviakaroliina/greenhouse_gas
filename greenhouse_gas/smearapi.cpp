@@ -117,6 +117,16 @@ void smearApi::get_users_selections()
     }
 }
 
+QString smearApi::getStartDate()
+{
+    return mw_->getSmearStartDate().toString();
+}
+
+QString smearApi::getEndDate()
+{
+    return mw_->getSmearEndDate().toString();
+}
+
 void smearApi::downloadCompleted(QNetworkReply *networkReply)
 {
     response_.push_back(networkReply->readAll());

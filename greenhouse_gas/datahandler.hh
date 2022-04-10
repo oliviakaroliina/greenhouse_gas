@@ -4,6 +4,7 @@
 #include "smearapi.hh"
 #include "statfiapi.hh"
 #include "station.hh"
+#include "history.hh"
 
 #include <QObject>
 #include <QJsonDocument>
@@ -17,9 +18,14 @@ class dataHandler : public QObject
 public:
     dataHandler(smearApi* smear = nullptr, statfiApi* statfi = nullptr);
 
-    QVector<Station*> getStations();
-    void testStationNames();
     void handleSmearData();
+    void handleStatfiData();
+
+    QVector<Station*> getStations();
+    QVector<History*> getHistorical();
+
+    QString getStartDate();
+    QString getEndDate();
 
 public slots:
     void areAllDataHandled();
@@ -32,8 +38,8 @@ private:
     statfiApi* statfi_ = nullptr;
     QVector<Station*> stationData = {};
     QVector<QString> stationNames = {};
+    QVector<History*> historicalData = {};
 
-    void handleStatfiData();
     void getInfo(QString& station, QString& gas, QString& variable);
 
     bool smearDataHandled = false;

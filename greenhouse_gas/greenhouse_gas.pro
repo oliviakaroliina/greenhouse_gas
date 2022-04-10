@@ -15,6 +15,7 @@ SOURCES += \
     datahandler.cpp \
     driver.cpp \
     errorhandler.cpp \
+    history.cpp \
     main.cpp \
     mainwindow.cpp \
     plotwindow.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     datahandler.hh \
     driver.hh \
     errorhandler.hh \
+    history.hh \
     mainwindow.hh \
     plotwindow.h \
     qcustomplot.h \
