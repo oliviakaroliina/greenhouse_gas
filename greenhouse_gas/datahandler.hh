@@ -74,6 +74,16 @@ private:
     const QString KUMPULACO2 = "KUM_EDDY.av_c_ep";
     const QString KUMPULASO2 = "KUM_META.SO_2";
     const QString KUMPULANO = "KUM_META.NO";
+
+    const QString COLUMNS = "columns";
+    const QString DATA = "data";
+    const QString SAMPTIME = "samptime";
+    const QString DIMENSION = "dimension";
+    const QString INFORMATION = "Tiedot";
+    const QString CATEGORY = "category";
+    const QString INDEX = "index";
+    const QString YEAR = "Vuosi";
+    const QString VALUE = "value";
 };
 
 #endif // DATAHANDLER_HH
