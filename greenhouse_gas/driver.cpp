@@ -104,7 +104,7 @@ void driver::createDataHandler()
 
 void driver::createPlotWindow()
 {
-    plotwindow = new PlotWindow(nullptr);
+    plotwindow = new PlotWindow(nullptr, datahandler);
     plotwindow->show();
 }
 
