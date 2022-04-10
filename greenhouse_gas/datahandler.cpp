@@ -11,11 +11,14 @@ void dataHandler::handleSmearData()
     QVector<QString> smearResponse = smear_->getResponse();
 
     for(int i = 0; i < smearResponse.size(); i++) {
+        // Transform the data from smear to Json format
         QJsonDocument doc = QJsonDocument::fromJson(smearResponse.at(i).toUtf8());
         QJsonObject root = doc.object();
-        QJsonArray columns = root["columns"].toArray();
-        QJsonArray data = root["data"].toArray();
+        QJsonArray columns = root[COLUMNS].toArray();
+        // Save the data to array
+        QJsonArray data = root[DATA].toArray();
 
+        // Extract variable and based on that get station name and gas type.
         QString variable = columns[0].toString();
         QString stationName = "";
         QString gas = "";
@@ -23,8 +26,9 @@ void dataHandler::handleSmearData()
 
         for(int k = 0; k < data.size(); k++) {
             QJsonObject values = data[k].toObject();
-            QJsonValue date = values.value(QString("samptime")); // kellonaika
-            QJsonValue dataValue = values.value(QString(variable)); // datan arvo
+            // The value of data from one measurement
+            QJsonValue dataValue = values.value(QString(variable));
+            // If there are no stations yet, create a new one and insert values
             if(stationData.size() == 0) {
                 Station* station = new Station(stationName);
                 stationData.push_back(station);
@@ -32,14 +36,16 @@ void dataHandler::handleSmearData()
                 station->insertValues(dataValue.toDouble(), gas);
              } else {
                 QVector<QString>::iterator it = std::find(stationNames.begin(), stationNames.end(), stationName);
-                if(it != stationNames.end()) { // löytyy
+                // If there are stations and a station is already saved, insert more data for it
+                if(it != stationNames.end()) {
                     for(int j = 0; j < stationData.size(); j++) {
                         if(stationData.at(j)->getName() == stationName) {
                             stationData.at(j)->insertValues(dataValue.toDouble(), gas);
                             break;
                         }
                     }
-                } else { // ei löydy
+                // Else create a new station and insert data
+                } else {
                     Station* station = new Station(stationName);
                     stationData.push_back(station);
                     stationNames.push_back(stationName);
@@ -56,20 +62,23 @@ void dataHandler::handleStatfiData()
 {
     QVector<QString> statfiResponse = statfi_->getResponse();
 
+    // Transform the data from smear to Json format
     for(int i = 0; i < statfiResponse.size(); i++) {
         QJsonDocument doc = QJsonDocument::fromJson(statfiResponse.at(i).toUtf8());
         QJsonObject root = doc.object();
-        QJsonObject dimension = root["dimension"].toObject();
+        QJsonObject dimension = root[DIMENSION].toObject();
 
-        QJsonObject tiedot = dimension["Tiedot"].toObject();
-        QJsonObject category = tiedot["category"].toObject();
-        QJsonObject index = category["index"].toObject();
+        // Get the type of dataset that was wanted
+        QJsonObject tiedot = dimension[INFORMATION].toObject();
+        QJsonObject category = tiedot[CATEGORY].toObject();
+        QJsonObject index = category[INDEX].toObject();
         QJsonValue value = index.keys().at(0);
         QString datasetType = value.toString();
 
-        QJsonObject vuosi = dimension["Vuosi"].toObject();
-        QJsonObject categryYear = vuosi["category"].toObject();
-        QJsonObject indexYear = categryYear["index"].toObject();
+        // Get the years
+        QJsonObject vuosi = dimension[YEAR].toObject();
+        QJsonObject categryYear = vuosi[CATEGORY].toObject();
+        QJsonObject indexYear = categryYear[INDEX].toObject();
         QVector<double> years;
         for(int j = 0; j < indexYear.keys().size(); j++) {
             QJsonValue yeats = indexYear.keys().at(j);
@@ -77,9 +86,10 @@ void dataHandler::handleStatfiData()
             double yearDouble = strYears.toDouble();
             years.push_back(yearDouble);
         }
-        // MUISTA STATFIAPIIN while (n <= years), muuten ei ota vipaa vuotta
+
+        // Get the values from each year
         QVector<double> values;
-        QJsonArray valuesArray = root["value"].toArray();
+        QJsonArray valuesArray = root[VALUE].toArray();
         for(int k = 0; k < valuesArray.size(); k++) {
             values.push_back(valuesArray.at(k).toDouble());
         }

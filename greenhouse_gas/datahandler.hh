@@ -18,12 +18,16 @@ class dataHandler : public QObject
 public:
     dataHandler(smearApi* smear = nullptr, statfiApi* statfi = nullptr);
 
+    // Handles the data gotten from smearApi and statfiApi
     void handleSmearData();
     void handleStatfiData();
 
+    // Returns a vector that holds information from each station
     QVector<Station*> getStations();
+    // Returns a vector that holds information from each data type from statfi
     QVector<History*> getHistorical();
 
+    // Returns the start and end dates from smear
     QString getStartDate();
     QString getEndDate();
 
@@ -34,17 +38,23 @@ signals:
     void dataHandled();
 
 private:
+    // Fetched data from smear and statfi
     smearApi* smear_ = nullptr;
     statfiApi* statfi_ = nullptr;
-    QVector<Station*> stationData = {};
-    QVector<QString> stationNames = {};
-    QVector<History*> historicalData = {};
 
+    // Vecotrs for saving data
+    QVector<Station*> stationData = {};
+    QVector<History*> historicalData = {};
+    QVector<QString> stationNames = {};
+
+    // Gets station name and gastype based on variable gotten from the data
     void getInfo(QString& station, QString& gas, QString& variable);
 
+    // Variables to tell if data has been handled
     bool smearDataHandled = false;
     bool statfiDataHandled = false;
 
+    // Variables
     const QString VARRIO = "Varrio";
     const QString HYYTIALA = "Hyytiala";
     const QString KUMPULA = "Kumpula";
