@@ -115,5 +115,59 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
 
 void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *customPlot)
 {
+    QCPAxisRect *axisRectHistory = new QCPAxisRect(customPlot, false);
+    axisRectHistory->setupFullAxesBox(true);
+    customPlot->plotLayout()->addElement(index_, 0, axisRectHistory);
 
+    QCPLegend *legendHistory = new QCPLegend;
+    axisRectHistory->insetLayout()->addElement(legendHistory,
+                                     Qt::AlignTop|Qt::AlignRight);
+    legendHistory->setLayer("legend");
+
+    int smallest = 0;
+    int largest = 0;
+    for(int j = 0; j < historical.size(); j++) {
+        History* history = historical.at(j);
+        QVector<double> years = history->getYears();
+        QVector<double> values = history->getValues();
+        int max = *std::max_element(values.begin(), values.end());
+        int min = *std::min_element(values.begin(), values.end());
+        if(max > largest) {
+            largest = max;
+        }
+        if(min < smallest) {
+            smallest = min;
+        }
+
+        // Move axes on axes layer and grids on grid layer
+        foreach (QCPAxisRect *rect, customPlot->axisRects())
+        {
+          foreach (QCPAxis *axis, rect->axes())
+          {
+            axis->setLayer("axes");
+            axis->grid()->setLayer("grid");
+          }
+        }
+        QCPGraph *graph = customPlot->addGraph(axisRectHistory->axis(QCPAxis::atBottom),
+                                                axisRectHistory->axis(QCPAxis::atLeft));
+        graph->setData(years, values);
+        QString type = history->getType(); // muunna oikeeks tekstiks
+        if(type == API_IN_TONNES) {
+            graph->setName(CO2_TONNES);
+        } else if(type == API_INTENSITY) {
+            graph->setName(CO2_INTENSITY);
+        } else if(type == API_INDEXED) {
+            graph->setName(CO2_INDEXED);
+        } else {
+            graph->setName(CO2_INTENSITY_INDEXED);
+        }
+
+        graph->setPen(QPen(coloursStatfi.at(j)));
+        graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic); //logaritminen!!
+        graph->valueAxis()->setRange(smallest, largest + (largest / 10));
+        graph->rescaleKeyAxis();
+        graph->keyAxis()->setLabel("Years");
+
+        legendHistory->addItem(new QCPPlottableLegendItem(legendHistory, graph));
+    }
 }
