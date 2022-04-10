@@ -167,6 +167,7 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
         graph->valueAxis()->setRange(smallest, largest + (largest / 10));
         graph->rescaleKeyAxis();
         graph->keyAxis()->setLabel("Years");
+        graph->valueAxis()->setLabel("Historical");
 
         legendHistory->addItem(new QCPPlottableLegendItem(legendHistory, graph));
     }
