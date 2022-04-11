@@ -29,12 +29,20 @@ private:
     dataHandler* datahandler_;
     QVector<QColor> coloursSmear = {Qt::red, Qt::black, Qt::cyan};
     QVector<QColor> coloursStatfi = {Qt::blue, Qt::green, Qt::gray, Qt::magenta};
-    int index_ = 0;
+    int xIndex_ = 0;
+    int yIndex_ = 0;
     QString smearStartDate_ = "";
     QString smearEndDate_ = "";
 
     void plotNewData(QVector<Station*> stations, QCustomPlot* customPlot);
     void plotHistoricalData(QVector<History*> historical, QCustomPlot* customPlot);
+
+    const QString LEGEND = "legend";
+    const QString YEAR = "Year";
+
+    const QString CO2 = "CO2";
+    const QString SO2 = "SO2";
+    const QString NO = "NOx";
 
     const QString API_IN_TONNES = "Khk_yht";
     const QString API_INTENSITY = "Khk_yht_las";

@@ -17,16 +17,19 @@ PlotWindow::PlotWindow(QWidget *parent, dataHandler* datahandler) :
 
     // Get new and historical data
     QVector<Station*> stations = datahandler_->getStations();
-
     QVector<History*> historical = datahandler_->getHistorical();
 
     // Plot if there is data
-    if(!stations.empty()) {
+    if(!stations.empty() and !historical.empty()) {
         smearStartDate_ = datahandler->getStartDate();
         smearEndDate_ = datahandler->getEndDate();
         plotNewData(stations, customPlot);
-    }
-    if(!historical.empty()) {
+        plotHistoricalData(historical, customPlot);
+    } else if(!stations.empty() and historical.empty()) {
+        smearStartDate_ = datahandler->getStartDate();
+        smearEndDate_ = datahandler->getEndDate();
+        plotNewData(stations, customPlot);
+    } else {
         plotHistoricalData(historical, customPlot);
     }
 
@@ -51,23 +54,13 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
 
         QCPAxisRect *axisRect = new QCPAxisRect(customPlot, false);
         axisRect->setupFullAxesBox(true);
-        customPlot->plotLayout()->addElement(index_, 0, axisRect);
-        index_++;
+        customPlot->plotLayout()->addElement(yIndex_, xIndex_, axisRect);
+        yIndex_++;
 
         QCPLegend *legend = new QCPLegend;
         axisRect->insetLayout()->addElement(legend,
                                          Qt::AlignTop|Qt::AlignRight);
-        legend->setLayer("legend");
-
-        // Move axes on axes layer and grids on grid layer
-        foreach (QCPAxisRect *rect, customPlot->axisRects())
-        {
-          foreach (QCPAxis *axis, rect->axes())
-          {
-            axis->setLayer("axes");
-            axis->grid()->setLayer("grid");
-          }
-        }
+        legend->setLayer(LEGEND);
 
         // insert data to graphs
         int smallest = 0;
@@ -90,13 +83,13 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
                                                         axisRect->axis(QCPAxis::atLeft));
                 graph->setData(dataX, dataY);
                 if(i == 0) {
-                    graph->setName("CO2");
+                    graph->setName(CO2);
                     graph->setPen(QPen(coloursSmear.at(RED)));
                 } else if(i == 2) {
-                    graph->setName("SO2");
+                    graph->setName(SO2);
                     graph->setPen(QPen(coloursSmear.at(BLACK)));
                 } else if(i == 4) {
-                    graph->setName("NOx");
+                    graph->setName(NO);
                     graph->setPen(QPen(coloursSmear.at(CYAN)));
                 }
                 legend->addItem(new QCPPlottableLegendItem(legend, graph));
@@ -116,12 +109,12 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
 {
     QCPAxisRect *axisRectHistory = new QCPAxisRect(customPlot, false);
     axisRectHistory->setupFullAxesBox(true);
-    customPlot->plotLayout()->addElement(index_, 0, axisRectHistory);
+    customPlot->plotLayout()->addElement(yIndex_, xIndex_, axisRectHistory);
 
     QCPLegend *legendHistory = new QCPLegend;
     axisRectHistory->insetLayout()->addElement(legendHistory,
                                      Qt::AlignTop|Qt::AlignRight);
-    legendHistory->setLayer("legend");
+    legendHistory->setLayer(LEGEND);
 
     int smallest = 0;
     int largest = 0;
@@ -138,15 +131,6 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
             smallest = min;
         }
 
-        // Move axes on axes layer and grids on grid layer
-        foreach (QCPAxisRect *rect, customPlot->axisRects())
-        {
-          foreach (QCPAxis *axis, rect->axes())
-          {
-            axis->setLayer("axes");
-            axis->grid()->setLayer("grid");
-          }
-        }
         QCPGraph *graph = customPlot->addGraph(axisRectHistory->axis(QCPAxis::atBottom),
                                                 axisRectHistory->axis(QCPAxis::atLeft));
         graph->setData(years, values);
@@ -169,10 +153,10 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
             graph->valueAxis()->setRange(smallest, largest + (largest / 10));
             graph->rescaleKeyAxis();
         } else {
-            graph->valueAxis()->setRange(0, largest + (largest / 10));
+            graph->valueAxis()->setRange(smallest, largest + (largest / 10));
             graph->rescaleKeyAxis();
         }
-        graph->keyAxis()->setLabel("Years");
+        graph->keyAxis()->setLabel(YEAR);
 
         legendHistory->addItem(new QCPPlottableLegendItem(legendHistory, graph));
     }
