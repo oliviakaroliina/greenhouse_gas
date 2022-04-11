@@ -163,7 +163,7 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
         graph->setPen(QPen(coloursStatfi.at(j)));
 
         // Logarithmic scale if more than one graph
-        if(historical.size() != 1 and type == API_IN_TONNES) {
+        if(historical.size() > 1 and type == API_IN_TONNES) {
             graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
             graph->valueAxis()->setRange(smallest, largest + (largest / 10));
             graph->rescaleKeyAxis();
