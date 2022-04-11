@@ -73,8 +73,9 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
         int smallest = 0;
         int largest = 0;
         for(int i = 0; i < allData.size(); i+= 2) {
-            QVector<double> dataX = allData.at(i); // how many eli aika?
+            QVector<double> dataX = allData.at(i);
             QVector<double> dataY = allData.at(i+1); // value
+
             if(!dataX.empty() and !dataY.empty()) {
                 int max = *std::max_element(dataY.begin(), dataY.end());
                 int min = *std::min_element(dataY.begin(), dataY.end());
@@ -84,25 +85,22 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
                 if(min < smallest) {
                     smallest = min;
                 }
-            }
 
-
-            if(dataX.size() != 0 && dataY.size() != 0) {
                 QCPGraph *graph = customPlot->addGraph(axisRect->axis(QCPAxis::atBottom),
                                                         axisRect->axis(QCPAxis::atLeft));
                 graph->setData(dataX, dataY);
                 if(i == 0) {
                     graph->setName("CO2");
-                    graph->setPen(QPen(coloursSmear.at(0)));
+                    graph->setPen(QPen(coloursSmear.at(RED)));
                 } else if(i == 2) {
                     graph->setName("SO2");
-                    graph->setPen(QPen(coloursSmear.at(1)));
+                    graph->setPen(QPen(coloursSmear.at(BLACK)));
                 } else if(i == 4) {
                     graph->setName("NOx");
-                    graph->setPen(QPen(coloursSmear.at(2)));
+                    graph->setPen(QPen(coloursSmear.at(CYAN)));
                 }
                 legend->addItem(new QCPPlottableLegendItem(legend, graph));
-                graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic); //logaritminen!!
+                graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
                 graph->valueAxis()->setRange(smallest, largest + (largest / 10));
                 graph->rescaleKeyAxis();
                 graph->valueAxis()->setLabel(station->getName());
@@ -151,23 +149,33 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
         QCPGraph *graph = customPlot->addGraph(axisRectHistory->axis(QCPAxis::atBottom),
                                                 axisRectHistory->axis(QCPAxis::atLeft));
         graph->setData(years, values);
-        QString type = history->getType(); // muunna oikeeks tekstiks
-        if(type == API_IN_TONNES) {
+        QString type = history->getType();
+        // if CO2 in tonnes and more selected, then use logarithmic scale
+        if(type == API_IN_TONNES and historical.size() != 1) {
             graph->setName(CO2_TONNES);
+            graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
+            graph->valueAxis()->setRange(smallest, largest + (largest / 10));
+            graph->rescaleKeyAxis();
+        } else if(type == API_IN_TONNES) {
+            graph->setName(CO2_TONNES);
+            graph->valueAxis()->setRange(0, largest + (largest / 10));
+            graph->rescaleKeyAxis();
         } else if(type == API_INTENSITY) {
             graph->setName(CO2_INTENSITY);
+            graph->valueAxis()->setRange(0, largest + (largest / 10));
+            graph->rescaleKeyAxis();
         } else if(type == API_INDEXED) {
             graph->setName(CO2_INDEXED);
+            graph->valueAxis()->setRange(0, largest + (largest / 10));
+            graph->rescaleKeyAxis();
         } else {
             graph->setName(CO2_INTENSITY_INDEXED);
+            graph->valueAxis()->setRange(0, largest + (largest / 10));
+            graph->rescaleKeyAxis();
         }
 
         graph->setPen(QPen(coloursStatfi.at(j)));
-        graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic); //logaritminen!!
-        graph->valueAxis()->setRange(smallest, largest + (largest / 10));
-        graph->rescaleKeyAxis();
         graph->keyAxis()->setLabel("Years");
-        graph->valueAxis()->setLabel("Historical");
 
         legendHistory->addItem(new QCPPlottableLegendItem(legendHistory, graph));
     }

@@ -46,6 +46,10 @@ private:
     const QString CO2_INTENSITY = "CO2 intensity";
     const QString CO2_INTENSITY_INDEXED = "CO2 intesity indexed";
 
+    const int RED = 0;
+    const int BLACK = 1;
+    const int CYAN = 2;
+
 };
 
 #endif // PLOTWINDOW_H
