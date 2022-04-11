@@ -29,7 +29,8 @@ void dataHandler::handleSmearData()
             // The value of data from one measurement
             QJsonValue dataValue = values.value(QString(variable));
             // If there are no stations yet, create a new one and insert values
-            if(stationData.size() == 0) {
+            // Ignore null and zero values
+            if(stationData.size() == 0 and !dataValue.isNull() and dataValue != 0) {
                 Station* station = new Station(stationName);
                 stationData.push_back(station);
                 stationNames.push_back(stationName);
@@ -37,7 +38,7 @@ void dataHandler::handleSmearData()
              } else {
                 QVector<QString>::iterator it = std::find(stationNames.begin(), stationNames.end(), stationName);
                 // If there are stations and a station is already saved, insert more data for it
-                if(it != stationNames.end()) {
+                if(it != stationNames.end() and !dataValue.isNull() and dataValue != 0) {
                     for(int j = 0; j < stationData.size(); j++) {
                         if(stationData.at(j)->getName() == stationName) {
                             stationData.at(j)->insertValues(dataValue.toDouble(), gas);
@@ -46,10 +47,12 @@ void dataHandler::handleSmearData()
                     }
                 // Else create a new station and insert data
                 } else {
-                    Station* station = new Station(stationName);
-                    stationData.push_back(station);
-                    stationNames.push_back(stationName);
-                    station->insertValues(dataValue.toDouble(), gas);
+                    if(!dataValue.isNull() and dataValue != 0) {
+                        Station* station = new Station(stationName);
+                        stationData.push_back(station);
+                        stationNames.push_back(stationName);
+                        station->insertValues(dataValue.toDouble(), gas);
+                    }
                 }
             }
         }

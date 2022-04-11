@@ -104,7 +104,8 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
                 graph->valueAxis()->setRange(smallest, largest + (largest / 10));
                 graph->rescaleKeyAxis();
                 graph->valueAxis()->setLabel(station->getName());
-                QString xLabel = "From " + smearStartDate_ + " to " + smearEndDate_ + " data taken every hour.";
+                QString xLabel = "From " + smearStartDate_ + " to " + smearEndDate_ + " data taken every hour.\n"
+                                         + "Null and zero values ignored.";
                 graph->keyAxis()->setLabel(xLabel);
             }
         }
