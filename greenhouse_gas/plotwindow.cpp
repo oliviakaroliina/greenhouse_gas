@@ -74,7 +74,7 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
         int largest = 0;
         for(int i = 0; i < allData.size(); i+= 2) {
             QVector<double> dataX = allData.at(i);
-            QVector<double> dataY = allData.at(i+1); // value
+            QVector<double> dataY = allData.at(i+1);
 
             if(!dataX.empty() and !dataY.empty()) {
                 int max = *std::max_element(dataY.begin(), dataY.end());
@@ -150,31 +150,27 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
                                                 axisRectHistory->axis(QCPAxis::atLeft));
         graph->setData(years, values);
         QString type = history->getType();
-        // if CO2 in tonnes and more selected, then use logarithmic scale
         if(type == API_IN_TONNES and historical.size() != 1) {
             graph->setName(CO2_TONNES);
-            graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
-            graph->valueAxis()->setRange(smallest, largest + (largest / 10));
-            graph->rescaleKeyAxis();
-        } else if(type == API_IN_TONNES) {
-            graph->setName(CO2_TONNES);
-            graph->valueAxis()->setRange(0, largest + (largest / 10));
-            graph->rescaleKeyAxis();
         } else if(type == API_INTENSITY) {
             graph->setName(CO2_INTENSITY);
-            graph->valueAxis()->setRange(0, largest + (largest / 10));
-            graph->rescaleKeyAxis();
         } else if(type == API_INDEXED) {
             graph->setName(CO2_INDEXED);
-            graph->valueAxis()->setRange(0, largest + (largest / 10));
-            graph->rescaleKeyAxis();
         } else {
             graph->setName(CO2_INTENSITY_INDEXED);
-            graph->valueAxis()->setRange(0, largest + (largest / 10));
-            graph->rescaleKeyAxis();
         }
 
         graph->setPen(QPen(coloursStatfi.at(j)));
+
+        // Logarithmic scale if more than one graph
+        if(historical.size() != 1 and type == API_IN_TONNES) {
+            graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
+            graph->valueAxis()->setRange(smallest, largest + (largest / 10));
+            graph->rescaleKeyAxis();
+        } else {
+            graph->valueAxis()->setRange(0, largest + (largest / 10));
+            graph->rescaleKeyAxis();
+        }
         graph->keyAxis()->setLabel("Years");
 
         legendHistory->addItem(new QCPPlottableLegendItem(legendHistory, graph));
