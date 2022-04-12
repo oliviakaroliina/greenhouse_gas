@@ -47,11 +47,14 @@ void PlotWindow::handleButton()
 
 void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot)
 {
+    // Get all the stations to be plotted
     for(int i = 0; i < stations.size(); i++) {
         Station* station = stations.at(i);
 
+        // Data in each station
         QVector<QVector<double>> allData = station->getAllData(); //CO2x, CO2y, SO2x, SO2y, NOx, NOy
 
+        // New axisrect for each station
         QCPAxisRect *axisRect = new QCPAxisRect(customPlot, false);
         axisRect->setupFullAxesBox(true);
         customPlot->plotLayout()->addElement(yIndex_, xIndex_, axisRect);
@@ -62,7 +65,8 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
                                          Qt::AlignTop|Qt::AlignRight);
         legend->setLayer(LEGEND);
 
-        // insert data to graphs
+        // Get smallest and largest value for range
+        // Insert data to graph
         int smallest = 0;
         int largest = 0;
         for(int i = 0; i < allData.size(); i+= 2) {
@@ -107,6 +111,7 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
 
 void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *customPlot)
 {
+    // Add new axisrect for data from statfi
     QCPAxisRect *axisRectHistory = new QCPAxisRect(customPlot, false);
     axisRectHistory->setupFullAxesBox(true);
     customPlot->plotLayout()->addElement(yIndex_, xIndex_, axisRectHistory);
@@ -116,6 +121,8 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
                                      Qt::AlignTop|Qt::AlignRight);
     legendHistory->setLayer(LEGEND);
 
+    // Get smallest and largest value for range
+    // Insert data to graph
     int smallest = 0;
     int largest = 0;
     for(int j = 0; j < historical.size(); j++) {
@@ -135,7 +142,7 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
                                                 axisRectHistory->axis(QCPAxis::atLeft));
         graph->setData(years, values);
         QString type = history->getType();
-        if(type == API_IN_TONNES and historical.size() != 1) {
+        if(type == API_IN_TONNES) {
             graph->setName(CO2_TONNES);
         } else if(type == API_INTENSITY) {
             graph->setName(CO2_INTENSITY);
@@ -147,7 +154,8 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
 
         graph->setPen(QPen(coloursStatfi.at(j)));
 
-        // Logarithmic scale if more than one graph
+        // Logarithmic scale if more than one graph and user wants
+        // to see CO2 in tonnes
         if(historical.size() > 1 and type == API_IN_TONNES) {
             graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
             graph->valueAxis()->setRange(smallest, largest + (largest / 10));

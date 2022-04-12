@@ -8,8 +8,9 @@ class History
 public:
     History(QString type = "", QVector<double> years = {}, QVector<double> values = {});
 
+    // Returns the type of data
     QString getType();
-
+    // Returns the vectors containing time and data
     QVector<double> getYears();
     QVector<double> getValues();
 
@@ -18,11 +19,6 @@ private:
     QVector<double> years_ = {};
     QVector<double> values_ = {};
 
-    // tarviiko?
-    const QString API_IN_TONNES = "Khk_yht";
-    const QString API_INTENSITY = "Khk_yht_las";
-    const QString API_INDEXED = "Khk_yht_index";
-    const QString API_INTENSITY_INDEXED = "Khk_yht_las_index";
 };
 
 #endif // HISTORY_HH

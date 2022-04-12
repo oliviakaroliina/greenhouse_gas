@@ -7,24 +7,22 @@
 class Station
 {
 public:
-    Station(QString name = "", QString gasType = "");
+    Station(QString name = "");
 
+    // Returns the name of the station
     QString getName();
+    // Inserts values
     void insertValues(double value, QString gasType);
+    // Returns all the vectors
     QVector<QVector<double>> getAllData();
-    void testi();
 
     ~Station();
 
 private:
+    // Name of the station
     QString name_ = "";
-    QVector<QString> gasTypes_ = {};
 
-    // nää alapuolelta vektoreihin
-    QString time_ = "";
-
-    // Three vectors per station for CO2, SO2, NOx
-    // x being time
+    // Vectors for storing the data, each gas type has its own
     QVector<double> CO2x_ = {};
     QVector<double> CO2y_ = {};
     QVector<double> SO2x_ = {};

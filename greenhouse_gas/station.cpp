@@ -1,9 +1,8 @@
 #include "station.hh"
 
-Station::Station(QString name, QString gasType)
+Station::Station(QString name)
 {
     name_ = name;
-    gasTypes_.push_back(gasType);
 }
 
 QString Station::getName()
