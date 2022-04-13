@@ -1,7 +1,7 @@
 #ifndef PLOTWINDOW_H
 #define PLOTWINDOW_H
 
-#include "qcustomplot.h"
+#include "qcustomplot.hh"
 #include "datahandler.hh"
 #include "station.hh"
 #include "history.hh"
@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::PlotWindow *ui;
-    dataHandler* datahandler_;
+    dataHandler *datahandler_;
 
     // Colours to use in graphs
     QVector<QColor> coloursSmear = {Qt::red, Qt::black, Qt::cyan};
@@ -38,6 +38,7 @@ private:
 
     QString smearStartDate_ = "";
     QString smearEndDate_ = "";
+    bool isCO2 = false;
 
     // Plots the data
     void plotNewData(QVector<Station*> stations, QCustomPlot* customPlot);
@@ -60,6 +61,13 @@ private:
     const QString CO2_INDEXED = "CO2 indexed";
     const QString CO2_INTENSITY = "CO2 intensity";
     const QString CO2_INTENSITY_INDEXED = "CO2 intesity indexed";
+
+    const int CO2vectors = 0;
+    const int SO2vectors = 2;
+    const int NOvectors = 4;
+
+    const int startSmallest = 0;
+    const int startLargest = 0;
 
     const int RED = 0;
     const int BLACK = 1;

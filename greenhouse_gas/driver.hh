@@ -1,7 +1,7 @@
 #ifndef DRIVER_HH
 #define DRIVER_HH
 
-#include "plotwindow.h"
+#include "plotwindow.hh"
 #include "smearapi.hh"
 #include "statfiapi.hh"
 #include "datahandler.hh"

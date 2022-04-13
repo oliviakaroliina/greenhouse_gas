@@ -1,4 +1,4 @@
-#include "plotwindow.h"
+#include "plotwindow.hh"
 #include "ui_plotwindow.h"
 
 PlotWindow::PlotWindow(QWidget *parent, dataHandler* datahandler) :
@@ -67,8 +67,8 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
 
         // Get smallest and largest value for range
         // Insert data to graph
-        int smallest = 0;
-        int largest = 0;
+        int smallest = startSmallest;
+        int largest = startLargest;
         for(int i = 0; i < allData.size(); i+= 2) {
             QVector<double> dataX = allData.at(i);
             QVector<double> dataY = allData.at(i+1);
@@ -86,23 +86,32 @@ void PlotWindow::plotNewData(QVector<Station*> stations, QCustomPlot *customPlot
                 QCPGraph *graph = customPlot->addGraph(axisRect->axis(QCPAxis::atBottom),
                                                         axisRect->axis(QCPAxis::atLeft));
                 graph->setData(dataX, dataY);
-                if(i == 0) {
+                if(i == CO2vectors) {
                     graph->setName(CO2);
                     graph->setPen(QPen(coloursSmear.at(RED)));
-                } else if(i == 2) {
+                    isCO2 = true;
+                } else if(i == SO2vectors) {
                     graph->setName(SO2);
                     graph->setPen(QPen(coloursSmear.at(BLACK)));
-                } else if(i == 4) {
+                } else if(i == NOvectors) {
                     graph->setName(NO);
                     graph->setPen(QPen(coloursSmear.at(CYAN)));
                 }
                 legend->addItem(new QCPPlottableLegendItem(legend, graph));
-                graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
-                graph->valueAxis()->setRange(smallest, largest + (largest / 10));
+
+                // Only use logarithmic scale when CO2 data to be able to see
+                // all the plots well
+                if(isCO2) {
+                    graph->valueAxis()->setScaleType(QCPAxis::stLogarithmic);
+                    graph->valueAxis()->setRange(smallest, largest + (largest / 10));
+                } else {
+                    graph->valueAxis()->setRange(smallest, largest + (largest / 10));
+                }
                 graph->rescaleKeyAxis();
                 graph->valueAxis()->setLabel(station->getName());
-                QString xLabel = "From " + smearStartDate_ + " to " + smearEndDate_ + " data taken every hour.\n"
-                                         + "Null and zero values ignored.";
+                QString xLabel = "Data from " + smearStartDate_ + " to "
+                        + smearEndDate_ + " data taken every hour.\n"
+                        + "Null and zero values ignored.";
                 graph->keyAxis()->setLabel(xLabel);
             }
         }
@@ -123,8 +132,8 @@ void PlotWindow::plotHistoricalData(QVector<History*> historical, QCustomPlot *c
 
     // Get smallest and largest value for range
     // Insert data to graph
-    int smallest = 0;
-    int largest = 0;
+    int smallest = startSmallest;
+    int largest = startLargest;
     for(int j = 0; j < historical.size(); j++) {
         History* history = historical.at(j);
         QVector<double> years = history->getYears();

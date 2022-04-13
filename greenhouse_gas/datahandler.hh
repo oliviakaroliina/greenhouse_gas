@@ -84,6 +84,8 @@ private:
     const QString INDEX = "index";
     const QString YEAR = "Vuosi";
     const QString VALUE = "value";
+
+    const int valueLocation = 0;
 };
 
 #endif // DATAHANDLER_HH

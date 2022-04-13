@@ -30,8 +30,8 @@ HEADERS += \
     errorhandler.hh \
     history.hh \
     mainwindow.hh \
-    plotwindow.h \
-    qcustomplot.h \
+    plotwindow.hh \
+    qcustomplot.hh \
     smearapi.hh \
     statfiapi.hh \
     station.hh

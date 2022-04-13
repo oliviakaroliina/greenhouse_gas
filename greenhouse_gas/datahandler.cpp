@@ -19,7 +19,7 @@ void dataHandler::handleSmearData()
         QJsonArray data = root[DATA].toArray();
 
         // Extract variable and based on that get station name and gas type.
-        QString variable = columns[0].toString();
+        QString variable = columns[valueLocation].toString();
         QString stationName = "";
         QString gas = "";
         getInfo(stationName, gas, variable);
@@ -30,7 +30,8 @@ void dataHandler::handleSmearData()
             QJsonValue dataValue = values.value(QString(variable));
             // If there are no stations yet, create a new one and insert values
             // Ignore null and zero values
-            if(stationData.size() == 0 and !dataValue.isNull() and dataValue != 0) {
+            if(stationData.size() == 0 and !dataValue.isNull()
+                    and dataValue != 0) {
                 Station* station = new Station(stationName);
                 stationData.push_back(station);
                 stationNames.push_back(stationName);
@@ -38,7 +39,8 @@ void dataHandler::handleSmearData()
              } else {
                 QVector<QString>::iterator it = std::find(stationNames.begin(), stationNames.end(), stationName);
                 // If there are stations and a station is already saved, insert more data for it
-                if(it != stationNames.end() and !dataValue.isNull() and dataValue != 0) {
+                if(it != stationNames.end() and !dataValue.isNull()
+                        and dataValue != 0) {
                     for(int j = 0; j < stationData.size(); j++) {
                         if(stationData.at(j)->getName() == stationName) {
                             stationData.at(j)->insertValues(dataValue.toDouble(), gas);
@@ -75,7 +77,7 @@ void dataHandler::handleStatfiData()
         QJsonObject tiedot = dimension[INFORMATION].toObject();
         QJsonObject category = tiedot[CATEGORY].toObject();
         QJsonObject index = category[INDEX].toObject();
-        QJsonValue value = index.keys().at(0);
+        QJsonValue value = index.keys().at(valueLocation);
         QString datasetType = value.toString();
 
         // Get the years
