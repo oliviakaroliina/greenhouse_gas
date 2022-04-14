@@ -23,9 +23,11 @@ public:
     QString getEndDate();
 
 signals:
+    // Signals when data is collected from the api
     void smearDataCollected();
 
 private Q_SLOTS:
+    // Download completed
     void downloadCompleted(QNetworkReply* networkReply);
 
 private:

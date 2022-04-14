@@ -55,6 +55,7 @@ public:
     // Returns Statfi end year
     int getStatfiEndYear();
 
+    // Creates error message to UI
     void createErrorMessage(QString msg);
 
 signals:

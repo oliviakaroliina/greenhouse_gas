@@ -22,6 +22,7 @@ public:
     ~PlotWindow();
 
 private slots:
+    // Return button pressed
     void handleButton();
 
 private:

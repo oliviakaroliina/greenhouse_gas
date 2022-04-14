@@ -19,9 +19,11 @@ public:
     QVector<QString> getResponse();
 
 signals:
+    // Signals when data is collected from the api
     void statfiDataCollected();
 
 private Q_SLOTS:
+    // Download completed
     void downloadCompleted(QNetworkReply* networkReply);
 
 private:
