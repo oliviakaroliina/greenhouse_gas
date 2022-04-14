@@ -1,7 +1,7 @@
 #ifndef PLOTWINDOW_H
 #define PLOTWINDOW_H
 
-#include "qcustomplot.hh"
+#include "qcustomplot.h"
 #include "datahandler.hh"
 #include "station.hh"
 #include "history.hh"

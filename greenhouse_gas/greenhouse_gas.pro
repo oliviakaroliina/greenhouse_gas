@@ -31,7 +31,7 @@ HEADERS += \
     history.hh \
     mainwindow.hh \
     plotwindow.hh \
-    qcustomplot.hh \
+    qcustomplot.h \
     smearapi.hh \
     statfiapi.hh \
     station.hh
